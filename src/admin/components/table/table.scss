@@ -1,0 +1,32 @@
+.table {
+
+  .remark {
+    padding: 5px;
+    border-radius: 5px;
+
+    &.good {
+      color: green;
+      background-color: rgba(0, 128, 0, 0.151);
+    }
+    &.fair {
+      color: goldenrod;
+      background-color: rgba(189, 189, 3, 0.103);
+    }
+    &.poor {
+      color: tomato;
+      background-color: rgba(189, 189, 3, 0.103);
+    }
+  }
+
+ 
+
+  .tabelAction {
+    padding: 2px 5px;
+    border-radius: 5px;
+    color: darkblue;
+    border: 1px dotted rgba(0, 0, 139, 0.596);
+    cursor: pointer;
+    font-size: 13px;
+  }
+
+}

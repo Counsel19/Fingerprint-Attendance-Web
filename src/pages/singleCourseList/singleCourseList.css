@@ -1,0 +1,8 @@
+.single_courseList{
+    display: flex;
+}
+
+.single_courseListWrapper{
+    flex: 15;
+    margin: 0 .5rem;
+}

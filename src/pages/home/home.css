@@ -1,0 +1,161 @@
+.home__container {
+  scroll-behavior: smooth;
+}
+
+.banner {
+  background: rgb(17, 138, 23);
+  background: linear-gradient(142deg, rgba(27, 185, 35, 0.8), rgb(28, 76, 3));
+  text-align: center;
+  padding: 4rem 20rem;
+  color: #fff;
+  margin-top: 3rem;
+}
+
+.banner h1 {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  line-height: 3.8rem;
+}
+
+.banner p {
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+.home__container section {
+  padding: 5rem 10rem 0;
+}
+
+.home__container section:last-of-type{
+  padding-bottom: 5rem;
+}
+
+section > h2 {
+  color: #118a17;
+  margin-bottom: 2rem;
+}
+
+.article-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  column-gap: 5rem;
+}
+
+.article-details:first-of-type {
+  margin-bottom: 2rem;
+}
+
+.about__img {
+  height: 20rem;
+  width: 24rem;
+  object-fit: contain;
+}
+
+.about__img:first-of-type {
+  object-fit: cover;
+}
+
+.about__img:last-of-type {
+  justify-content: flex-end;
+}
+
+.article-details h1 {
+  font-size: 2rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #ccc;
+  width: fit-content;
+}
+
+.article-details p {
+  font-size: 1.2rem;
+  line-height: 1.6rem;
+  font-weight: 300;
+}
+
+.solution__details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.card {
+  background-color: #fff;
+  border: 2px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 3.5rem;
+}
+
+.card__icon {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  color: #118a17;
+}
+
+.card h2 {
+  margin-bottom: 1rem;
+  font-weight: 300;
+}
+
+.card p {
+  font-size: 1.1rem;
+  font-weight: 300;
+}
+
+
+@media screen and (max-width: 600px){
+  .banner{
+    padding: 2rem;
+    
+  }
+
+  .banner h1 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    line-height: 2rem;
+  }
+
+  .banner p {
+    font-size: 1.1rem;
+    font-weight: 300;
+  }
+  .home__container section{
+    padding: 1rem 1rem 0;
+  }
+
+  .article-details{
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+
+  }
+
+  .article-details h1 {
+    font-size: 1.5rem;
+  }
+
+
+  .article-details p {
+    font-size: 1.1rem;
+   
+  }
+
+  .about__img{
+      height: 100%;
+      width: 100%;
+      margin: 1rem 0;
+  }
+
+  .solution__details {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card{
+    margin: 0 0 1rem 0;
+  }
+}

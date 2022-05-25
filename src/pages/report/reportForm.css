@@ -1,0 +1,26 @@
+.report__form {
+  display: flex;
+}
+
+.report__formDetails{
+  flex: 15;
+  margin: 0 .5rem;
+}
+
+.report__formWrapper {
+  margin: 1rem auto;
+  width: 30%;
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.06rem;
+}
+
+.report__formWrapper  h1{
+    color: #118a17;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    font-size: 2rem;
+}
+

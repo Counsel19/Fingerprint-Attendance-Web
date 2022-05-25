@@ -1,0 +1,40 @@
+footer {
+  background-color: #054208;
+  color: rgb(177, 177, 177);
+  display: flex;
+  justify-content: space-around;
+  padding: 3rem;
+  align-items: center;
+}
+
+.footer__brand {
+  display: flex;
+  column-gap: 1rem;
+  align-items: center;
+}
+.footer__brand h3 {
+  font-weight: 300;
+}
+
+.footer__links {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+}
+
+.footer__links a:hover {
+  text-decoration: underline;
+}
+
+@media screen and (max-width: 600px) {
+  footer {
+    padding: 1rem;
+  }
+  .footer__brand {
+    display: none;
+  }
+
+  .footer__links {
+    row-gap: 2rem;
+  }
+}
