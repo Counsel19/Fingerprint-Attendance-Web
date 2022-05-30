@@ -21,15 +21,15 @@
 
  .profile__details{
    margin-top: 1rem;
-   padding: 1.5rem;
+   padding: 1.5rem 4rem;
    background-color: #fff;
    display: flex;
-   column-gap: 5rem;
+   column-gap: 10rem;
    line-height: 1.8rem;
  }
 
  .profile__details img{
-   width: 17rem;
+   width: 14rem;
  }
 
  .profile__details h2{

@@ -4,6 +4,13 @@
   .listContainer {
     flex: 6;
     margin: 0 10px;
+
+    @media screen and (max-width: 768px) {
+      &{
+        max-width: 724px;
+        width: 100%;
+      }
+    }
   }
 
   .tableTitle{

@@ -60,7 +60,7 @@ const AttendanceTable = ({ attendance, handleViewAttendance }) => {
   console.log("attendance", attendance);
 
   return (
-    <div>
+    <>
       <EnhancedTable
         attendance={true}
         headCells={headCells}
@@ -68,7 +68,7 @@ const AttendanceTable = ({ attendance, handleViewAttendance }) => {
         data={attendance}
         searchParams={searchParams}
       />
-    </div>
+    </>
   );
 };
 

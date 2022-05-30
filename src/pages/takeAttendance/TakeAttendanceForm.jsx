@@ -14,6 +14,7 @@ const TakeAttendanceForm = () => {
   const [session, setSession] = useState("");
   const [semester, setSemester] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showView, setShowView] = useState(false);
   const navigate = useNavigate();
 
   const noInput = session === "" && semester === "";
@@ -89,13 +90,22 @@ const TakeAttendanceForm = () => {
               />
             </div>
           </form>
-          <hr />
+
           <div className="take__fingerPrint">
-            <TakeFingerprint />
-            <ViewStudent />
+            <div className="regNo_input">
+              <label>Enter Student Registration Number</label>
+              <input type="text" />
+            </div>
+            <TakeFingerprint  />
           </div>
+          <button onClick={() => setShowView(true)}>Verify</button>
         </div>
       </div>
+      {showView && (
+        <div className="viewStudent__background">
+          <ViewStudent setShowView={setShowView}/>
+        </div>
+      )}
     </div>
   );
 };

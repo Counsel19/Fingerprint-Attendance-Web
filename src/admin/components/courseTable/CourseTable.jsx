@@ -23,7 +23,7 @@ const CourseTable = ({ courses }) => {
     },
     {
       id: "numOfStudentsOffering",
-      numeric: false,
+      numeric: true,
       disablePadding: false,
       label: "Students Offering",
     },

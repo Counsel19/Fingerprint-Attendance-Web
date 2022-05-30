@@ -77,7 +77,6 @@ const Chart = ({ aspect, title, singleUserId }) => {
           fiveMonthRes,
         } = await getSingleAttendanceSummary(singleUserId);
 
-      
         setChartData([
           {
             name: monthNames[fiveMonthRes.number],
@@ -110,10 +109,10 @@ const Chart = ({ aspect, title, singleUserId }) => {
   return (
     <div className="chart">
       <div className="title">{title}</div>
-      <ResponsiveContainer width="100%" aspect={aspect}>
+      <ResponsiveContainer width="99%" aspect={aspect}>
         <AreaChart
-          width={730}
-          height={250}
+          width={300}
+          height={400}
           data={chartData}
           margin={{ top: 10, right: 10, left: 10, bottom: 0 }}
         >

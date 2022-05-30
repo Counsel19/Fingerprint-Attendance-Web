@@ -4,7 +4,7 @@ import { DataContext } from "../../context/dataContext";
 import { getStudents } from "../../services/getService";
 import "./takeAttendanceForm.css";
 
-const TakeFingerprint = () => {
+const TakeFingerprint = ({ setShowView }) => {
   const navigate = useNavigate();
   const {
     attendanceDetails,
@@ -92,14 +92,13 @@ const TakeFingerprint = () => {
   return (
     <div className="takefingerprint__container">
       <div className="takefingerprint__wrapper">
-        <h3>Take FingerPrint</h3>
         <div>
-          <p>Place Index on the fingerprint scanner</p>
-
-          <div className="view__capture"></div>
+          <h3>Take FingerPrint</h3>
+          <p>Place any of your right fingers on the scanner</p>
         </div>
-        <div className="attendance__formGroup">
-          <input type="submit" value="Capture" />
+        <div className="takefingerprint__right">
+          <div className="view__capture"></div>
+          <button>Capture</button>
         </div>
       </div>
     </div>

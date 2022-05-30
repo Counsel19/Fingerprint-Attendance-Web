@@ -3,10 +3,25 @@
   width: 100%;
   .singleContainer {
     flex: 6;
+
+    @media screen and (max-width: 768px) {
+      &{
+        max-width: 724px;
+        width: 100%;
+      }
+    }
+
     .top {
       padding: 20px;
       display: flex;
       gap: 20px;
+
+      @media screen and (max-width: 1028px) {
+        & {
+          
+          flex-direction: column;
+        }
+      }
 
       .left {
         flex: 1;
@@ -70,6 +85,12 @@
 
       .right {
         flex: 2;
+        @media screen and (max-width: 100px) {
+          &{
+            max-width: 985px;
+            width: 100%;
+          }
+        }
       }
     }
 

@@ -1,8 +1,26 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { courseInputs, studentInputs, userInputs, editUserInputs, passwordInputs } from "./admin/formSource";
-import { AdminHome, Edit, List, New, Single, ChangePassword } from "./admin/pages";
-import { IsUserRedirect, ProtectedRoute } from "./helpers/routes";
+import {
+  courseInputs,
+  studentInputs,
+  userInputs,
+  editUserInputs,
+  passwordInputs,
+} from "./admin/formSource";
+import {
+  AdminHome,
+  Edit,
+  List,
+  New,
+  Single,
+  ChangePassword,
+} from "./admin/pages";
+import {
+  IsUserRedirectUser,
+  IsUserRedirectAdmin,
+  ProtectedRouteUser,
+  ProtectedRouteAdmin,
+} from "./helpers/routes";
 import {
   Home,
   SignIn,
@@ -12,6 +30,8 @@ import {
   ReportForm,
   SingleCourseList,
   StudentStats,
+  UserEdit,
+  UserChangePassword,
 } from "./pages";
 import { DataContext } from "./context/dataContext";
 import SignInAsAdmin from "./pages/signInAsAdmin/SignInAsAdmin";
@@ -21,7 +41,6 @@ import "react-spinner-animated/dist/index.css";
 
 function App() {
   UseAuth();
-
   const { currentUser, adminUser } = useContext(DataContext);
 
   return (
@@ -38,93 +57,103 @@ function App() {
         <Router>
           <Routes>
             <Route path="/">
-              <Route index element={<Home />} />
+              <Route
+                index
+                element={
+                  <IsUserRedirectUser loggedInPath="/dashboard">
+                    <Home />
+                  </IsUserRedirectUser>
+                }
+              />
               <Route
                 path="signin"
                 element={
-                  <IsUserRedirect user={currentUser} loggedInPath="/dashboard">
+                  <IsUserRedirectUser loggedInPath="/da shboard">
                     <SignIn />
-                  </IsUserRedirect>
+                  </IsUserRedirectUser>
                 }
               />
               <Route
                 path="signin-admin"
                 element={
-                  <IsUserRedirect user={adminUser} loggedInPath="/admin">
+                  <IsUserRedirectAdmin loggedInPath="/admin">
                     <SignInAsAdmin />
-                  </IsUserRedirect>
+                  </IsUserRedirectAdmin>
                 }
               />
-              <Route
-                path="signin"
-                element={
-                  <IsUserRedirect user={currentUser} loggedInPath="/dashboard">
-                    <SignIn />
-                  </IsUserRedirect>
-                }
-              />
+
               <Route
                 path="dashboard"
                 element={
-                  <ProtectedRoute user={currentUser} authPath="/signin">
+                  <ProtectedRouteUser authPath="/signin">
                     <Dashboard />
-                  </ProtectedRoute>
+                  </ProtectedRouteUser>
                 }
               />
               <Route
                 path="profile"
                 element={
-                  <ProtectedRoute user={currentUser} authPath="/signin">
+                  <ProtectedRouteUser authPath="/signin">
                     <Profile />
-                  </ProtectedRoute>
+                  </ProtectedRouteUser>
                 }
               />
               <Route
                 path="profile/edit"
                 element={
-                  <ProtectedRoute user={currentUser} authPath="/signin">
-                   <Edit inputs={editUserInputs} title="Edit Lecturer" />
-                  </ProtectedRoute>
+                  <ProtectedRouteUser authPath="/signin">
+                    <UserEdit inputs={editUserInputs} title="Edit Profile" />
+                  </ProtectedRouteUser>
                 }
               />
               <Route
-                path="take-attendance-form"
+                path="profile/edit/change-password"
                 element={
-                  <ProtectedRoute user={currentUser} authPath="/signin">
-                    <TakeAttendanceForm />
-                  </ProtectedRoute>
+                  <ProtectedRouteUser authPath="/signin">
+                    <UserChangePassword inputs={passwordInputs} />
+                  </ProtectedRouteUser>
                 }
               />
+
+              <Route
+                path="take-attendance"
+                element={
+                  <ProtectedRouteUser authPath="/signin">
+                    <TakeAttendanceForm />
+                  </ProtectedRouteUser>
+                }
+              />
+              
               <Route
                 path="student-stats"
                 element={
-                  <ProtectedRoute user={currentUser} authPath="/signin">
+                  <ProtectedRouteUser authPath="/signin">
                     <StudentStats />
-                  </ProtectedRoute>
+                  </ProtectedRouteUser>
                 }
               />
               <Route
                 path="report-form"
                 element={
-                  <ProtectedRoute user={currentUser} authPath="/signin">
+                  <ProtectedRouteUser authPath="/signin">
                     <ReportForm />
-                  </ProtectedRoute>
+                  </ProtectedRouteUser>
                 }
               />
               <Route
                 path="report/:course"
                 element={
-                  <ProtectedRoute user={currentUser} authPath="/signin">
+                  <ProtectedRouteUser authPath="/signin">
                     <SingleCourseList attendance={true} />
-                  </ProtectedRoute>
+                  </ProtectedRouteUser>
                 }
               />
               <Route
                 path="report/:course/:id"
                 element={
-                  <ProtectedRoute user={currentUser} authPath="/signin">
+                  <ProtectedRouteUser authPath="/signin">
                     <SingleCourseList attendanceData={true} />
-                  </ProtectedRoute>
+                  </ProtectedRouteUser>
                 }
               />
             </Route>
@@ -133,9 +162,9 @@ function App() {
               <Route
                 index
                 element={
-                  <ProtectedRoute user={adminUser} authPath="/signin-admin">
+                  <ProtectedRouteAdmin authPath="/signin-admin">
                     <AdminHome />
-                  </ProtectedRoute>
+                  </ProtectedRouteAdmin>
                 }
               />
 
@@ -143,49 +172,49 @@ function App() {
                 <Route
                   index
                   element={
-                    <ProtectedRoute user={adminUser} authPath="/signin-admin">
+                    <ProtectedRouteAdmin authPath="/signin-admin">
                       <List user={true} />
-                    </ProtectedRoute>
+                    </ProtectedRouteAdmin>
                   }
                 />
                 <Route
                   path=":userId"
                   element={
-                    <ProtectedRoute user={adminUser} authPath="/signin-admin">
+                    <ProtectedRouteAdmin authPath="/signin-admin">
                       <Single />
-                    </ProtectedRoute>
+                    </ProtectedRouteAdmin>
                   }
                 />
                 <Route
                   path="new"
                   element={
-                    <ProtectedRoute user={adminUser} authPath="/signin-admin">
+                    <ProtectedRouteAdmin authPath="/signin-admin">
                       <New inputs={userInputs} title="Add New Lecturer" />
-                    </ProtectedRoute>
+                    </ProtectedRouteAdmin>
                   }
                 />
                 <Route
                   path="edit/:id"
                   element={
-                    <ProtectedRoute user={adminUser} authPath="/signin-admin">
+                    <ProtectedRouteAdmin authPath="/signin-admin">
                       <Edit inputs={editUserInputs} title="Edit Lecturer" />
-                    </ProtectedRoute>
+                    </ProtectedRouteAdmin>
                   }
                 />
                 <Route
                   path="edit/:id/change-password"
                   element={
-                    <ProtectedRoute user={adminUser} authPath="/signin-admin">
-                      <ChangePassword inputs={passwordInputs} title="Edit Lecturer" />
-                    </ProtectedRoute>
+                    <ProtectedRouteAdmin authPath="/signin-admin">
+                      <ChangePassword inputs={passwordInputs} />
+                    </ProtectedRouteAdmin>
                   }
                 />
                 <Route
                   path="new"
                   element={
-                    <ProtectedRoute user={adminUser} authPath="/signin-admin">
+                    <ProtectedRouteAdmin authPath="/signin-admin">
                       <New inputs={userInputs} title="Add New Lecturer" />
-                    </ProtectedRoute>
+                    </ProtectedRouteAdmin>
                   }
                 />
               </Route>
@@ -194,17 +223,17 @@ function App() {
                 <Route
                   index
                   element={
-                    <ProtectedRoute user={adminUser} authPath="/signin-admin">
+                    <ProtectedRouteAdmin authPath="/signin-admin">
                       <List student={true} />
-                    </ProtectedRoute>
+                    </ProtectedRouteAdmin>
                   }
                 />
                 <Route
                   path="new"
                   element={
-                    <ProtectedRoute user={adminUser} authPath="/signin-admin">
+                    <ProtectedRouteAdmin authPath="/signin-admin">
                       <New inputs={studentInputs} title="Add New Student" />
-                    </ProtectedRoute>
+                    </ProtectedRouteAdmin>
                   }
                 />
               </Route>
@@ -212,17 +241,17 @@ function App() {
                 <Route
                   index
                   element={
-                    <ProtectedRoute user={adminUser} authPath="/signin-admin">
+                    <ProtectedRouteAdmin authPath="/signin-admin">
                       <List attendance={true} />
-                    </ProtectedRoute>
+                    </ProtectedRouteAdmin>
                   }
                 />
                 <Route
                   path=":id"
                   element={
-                    <ProtectedRoute user={adminUser} authPath="/signin-admin">
-                      <List student={true} attendanceData={true} />
-                    </ProtectedRoute>
+                    <ProtectedRouteAdmin authPath="/signin-admin">
+                      <List attendanceData={true} />
+                    </ProtectedRouteAdmin>
                   }
                 />
               </Route>
@@ -230,21 +259,21 @@ function App() {
                 <Route
                   index
                   element={
-                    <ProtectedRoute user={adminUser} authPath="/signin-admin">
+                    <ProtectedRouteAdmin authPath="/signin-admin">
                       <List newCourse={true} />
-                    </ProtectedRoute>
+                    </ProtectedRouteAdmin>
                   }
                 />
                 <Route
                   path="new"
                   element={
-                    <ProtectedRoute user={adminUser} authPath="/signin-admin">
+                    <ProtectedRouteAdmin authPath="/signin-admin">
                       <New
                         newCourse={true}
                         inputs={courseInputs}
                         title="Add New Course"
                       />
-                    </ProtectedRoute>
+                    </ProtectedRouteAdmin>
                   }
                 />
               </Route>

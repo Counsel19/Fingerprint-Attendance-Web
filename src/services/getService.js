@@ -217,6 +217,7 @@ export const getSingleAttendance = async (attendanceDocId, userId) => {
 
 export const getSingleStudent = async (userId, studentId) => {
   try {
+    console.log("studentId", studentId);
     const data = await fetch(
       `http://localhost:3001/api/students/${userId}?studentId=${studentId}`,
       {
@@ -229,11 +230,13 @@ export const getSingleStudent = async (userId, studentId) => {
 
     if (data.ok) {
       const res = await data.json();
+      console.log("getSingleStudent", res);
 
       res["id"] = res["_id"];
       delete res["_id"];
       delete res["__v"];
 
+      console.log("result", res);
       return res;
     } else {
       console.log("Request Error");
@@ -573,7 +576,10 @@ export const getCourseAttendancePercentage = async (courseData) => {
   return !percentage ? 0 : percentage;
 };
 
-export const getLecturerSubmittedAttendance = async (user_docId) => {
+export const getLecturerSubmittedAttendance = async (
+  user_docId,
+  lecturerChart
+) => {
   try {
     const data = await fetch(
       `http://localhost:3001/api/attendance/user/${user_docId}`,
@@ -592,8 +598,10 @@ export const getLecturerSubmittedAttendance = async (user_docId) => {
         item["id"] = item["_id"];
         delete item["_id"];
         delete item["__v"];
-        let dateTime = new Date(item.date);
-        item.date = dateTime.toLocaleString();
+        if (!lecturerChart) {
+          let dateTime = new Date(item.date);
+          item.date = dateTime.toLocaleString();
+        }
 
         return item;
       });
@@ -658,10 +666,12 @@ export const getLectureDetails = async (currentUser, semester, session) => {
   const weekNames = ["Sun", "Mon", "Tue", "Wed", "Thurs", "Fri", "Sat", "No"];
 
   const submittedAttendance = await getLecturerSubmittedAttendance(
-    currentUser.id
+    currentUser.id,
+    true
   );
 
   console.log("submittedAttendance", submittedAttendance);
+  console.log("currentUser", currentUser);
 
   if (submittedAttendance) {
     const data = Array.prototype.concat(
@@ -695,6 +705,10 @@ export const getLectureDetails = async (currentUser, semester, session) => {
               console.log("count", count);
               seenCourse = submittedAttendance[i].course;
 
+              console.log(
+                "sbmittedAttendance[i].date",
+                submittedAttendance[i].date
+              );
               date = new Date(submittedAttendance[i].date).getDate();
               day = new Date(submittedAttendance[i].date).getDay();
               month = new Date(submittedAttendance[i].date).getMonth();
@@ -819,5 +833,3 @@ export const getLectureAttendanceSummary = async (attendanceData) => {
 
   return attendanceDoc;
 };
-
-export const getStudentAttendanceSummary = async (studentAttendance) => {};

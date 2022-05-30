@@ -5,6 +5,13 @@
   .newContainer {
     flex: 6;
 
+    @media screen and (max-width: 768px) {
+      & {
+        max-width: 724px;
+        width: 100%;
+      }
+    }
+
     .top,
     .bottom {
       -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
@@ -15,6 +22,56 @@
       background-color: #fff;
       color: #118a17;
 
+      .fingerprint__enroll {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        color: rgb(32, 32, 32);
+        margin: 0 5rem;
+
+        @media screen and (max-width: 768px) {
+          & {
+            flex-direction: column;
+            margin: 0;
+          }
+        }
+
+        h3 {
+          font-weight: bold;
+          color: #118a17;
+
+          margin-bottom: 6%;
+        }
+
+        p {
+          color: #999;
+          font-weight: 500;
+          font-size: 1.1rem;
+          margin-bottom: 10px;
+        }
+
+        .fingerprint__enrollInner {
+          display: flex;
+          flex-direction: column;
+          padding: 1rem;
+        }
+
+        ol {
+          list-style-position: inside;
+          color: #999;
+        }
+
+        img {
+          width: 200px;
+        }
+      }
+
+      @media screen and (max-width: 768px) {
+        & {
+          flex-direction: column;
+        }
+      }
+
       h1 {
         color: #118a17;
         font-size: 20px;
@@ -22,11 +79,47 @@
 
       .left {
         flex: 1;
-        text-align: center;
-        margin-top: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      
+
+        button {
+          width: 150px;
+          padding: 10px;
+          border: none;
+          background-color: #118a17;
+          color: white;
+          font-weight: bold;
+          cursor: pointer;
+          border: 1px solid #118a17;
+          transition: 0.4s;
+          
+        }
+        button:hover {
+          background-color: #fff;
+          color: #118a17;
+        }
+        .capture__inner{
+          display: flex;
+          gap: 1rem;
+          align-items: center;
+        }
+
+        @media screen and (max-width: 768px) {
+          & {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 2rem;
+            margin-left: 20px;
+          }
+        }
 
         .formInput {
-          margin-top: 10px;
+          margin: 10px 0 40px 0;
+
 
           label {
             display: flex;
@@ -64,11 +157,24 @@
         form {
           display: flex;
           flex-wrap: wrap;
-          gap: 30px;
+          gap: 45px;
           justify-content: space-around;
+
+          @media screen and (max-width: 512px) {
+            & {
+              flex-direction: column;
+              padding: 1rem;
+            }
+          }
 
           .formInput {
             width: 40%;
+
+            @media screen and (max-width: 512px) {
+              & {
+                width: 100%;
+              }
+            }
 
             label {
               display: flex;
@@ -116,7 +222,12 @@
             margin-top: 10px;
             border: 1px solid #118a17;
             transition: 0.4s;
-            margin: 10px 9.5rem;
+            margin: 10px 9.5rem 0;
+            @media screen and (max-width: 768px) {
+              & {
+                margin: 0;
+              }
+            }
           }
 
           button:hover {
@@ -134,6 +245,12 @@
     .addCourseStyle {
       max-width: 900px;
       margin: auto;
+
+      @media screen and (max-width: 900px) {
+        & {
+          margin: 20px;
+        }
+      }
     }
   }
 }

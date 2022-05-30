@@ -45,24 +45,9 @@ export const handleCreateLecturer = async (user) => {
 };
 
 export const handleEditLecturer = async (user) => {
-  const {
-    firstname,
-    lastname,
-    department,
-    faculty,
-    rank,
-    phone,
-    gender,
-    courses,
-    email,
-    currentPassword,
-    newPassword,
-    confirmPassword,
-    image,
-  } = user;
+  
 
-
-  console.log("user", user)
+  console.log("user", user);
 
   try {
     let res = await fetch(`http://localhost:3001/api/users/${user.id}`, {
@@ -71,26 +56,12 @@ export const handleEditLecturer = async (user) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        firstname,
-        lastname,
-        department,
-        faculty,
-        rank,
-        gender,
-        courses,
-        phone,
-        email,
-        currentPassword,
-        newPassword,
-        confirmPassword,
-        image,
-      }),
+      body: JSON.stringify(user),
     });
     if (res.status === 400) {
       res = await res.json();
-      console.log("handleEditLecturer", res)
-      window.alert(res);
+      console.log("handleEditLecturer", res);
+      window.alert(res.message);
     } else if (!res) {
       window.alert("Request Error");
     } else {

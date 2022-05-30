@@ -13,6 +13,7 @@ import SearchInput from "../input-form/SearchInput";
 import { search } from "../../services/search";
 import { SlidingPebbles } from "react-spinner-animated";
 import "react-spinner-animated/dist/index.css";
+import AttendanceInfo from "../../admin/components/attendanceInfo/AttendanceInfo";
 
 const Datatable = ({ attendanceData }) => {
   const location = useLocation();
@@ -38,7 +39,7 @@ const Datatable = ({ attendanceData }) => {
 
   useEffect(() => {
     const getData = async () => {
-      // setAttendance(await getAttendanceDetails(true));
+      setAttendance(await getAttendanceDetails(true));
     };
 
     getData();
@@ -47,8 +48,11 @@ const Datatable = ({ attendanceData }) => {
   useEffect(() => {
     const getData = async () => {
       if (attendance) {
-        const singleAttendance = await getSingleAttendance(attendanceDocId, currentUser.id );
-        console.log("singleAttendance", singleAttendance)
+        const singleAttendance = await getSingleAttendance(
+          attendanceDocId,
+          currentUser.id
+        );
+        console.log("singleAttendance", singleAttendance);
 
         const studentsRecord = await Promise.all(
           singleAttendance.students_present.map(async (studentId) => {
@@ -56,7 +60,7 @@ const Datatable = ({ attendanceData }) => {
           })
         );
 
-        console.log("studentsRecord", studentsRecord)
+        console.log("studentsRecord", studentsRecord);
 
         setAttendanceRecord({
           info: attendance.filter((data) => data["id"] === attendanceDocId),
@@ -66,7 +70,7 @@ const Datatable = ({ attendanceData }) => {
     };
 
     getData();
-  }, [attendance, attendanceDocId]);
+  }, [attendance, attendanceDocId, currentUser.id]);
 
   const handleView = async (id) => {
     navigate(`/admin/users/${id}`);
@@ -99,7 +103,7 @@ const Datatable = ({ attendanceData }) => {
           className="datatable"
         >
           <div className="datatableTitle">
-            {`Attendance Record for ${course}`}
+            Attendance Record
             {/* {deleteMessage && <div className="deleteMessage">{deleteMessage}</div>} */}
 
             <SearchInput />
@@ -107,6 +111,9 @@ const Datatable = ({ attendanceData }) => {
               Take New Attendance
             </Link>
           </div>
+
+          <AttendanceInfo attendanceRecord={attendanceRecord} />
+
           <DataGrid
             className="datagrid"
             rows={search(attendanceRecord?.data, searchParams, q)}

@@ -1,9 +1,9 @@
 .sidebar {
   background-color: #fff;
-  height: 100%;
-  padding: 3rem 1rem 1rem 1rem;
+  padding: 2.8rem 0 1rem 0;
   font-size: 0.9rem;
   border: 1px solid #ccc;
+
 }
 
 .profile {
@@ -11,9 +11,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-bottom: 1rem;
+  padding: 1rem 1rem 0;
   margin-bottom: 1.5rem;
   border-bottom: 0.3rem solid #118a17;
+  
 }
 
 .profile img {
@@ -24,13 +25,13 @@
 
 .profile h3 {
   font-weight: 400;
-  margin-top: 1rem;
+  margin: 1rem 0;
 }
 
 .side__nav {
   display: flex;
   flex-direction: column;
-  padding-bottom: 1rem;
+  padding: 0 0 1rem 1rem;
   margin-bottom: 2rem;
   border-bottom: 0.3rem solid #118a17;
 }
@@ -86,4 +87,46 @@
 
 .logout__btnIcon {
   margin-right: 0.2rem;
+}
+
+.mobile__userNav {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  right: 0;
+  background-color: rgba(36, 35, 35, 0.61);
+  transition: 0.3s;
+  min-height: 100vh;
+  display: none;
+  justify-content: space-between;
+  overflow: hidden;
+  display: hidden;
+  z-index: -1;
+}
+
+.close__icon svg {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 900;
+  cursor: pointer;
+  margin: 20px;
+}
+
+.mobile__userNavInner {
+  background-color: white;
+  width: 50%;
+  
+}
+
+@media screen and (max-width: 1144px) {
+   .sidebar{
+    display: none;
+  }
+}
+@media screen and (max-width: 1144px) {
+  .mobile__userNav {
+    left: 0;
+    z-index: 1000;
+    display: flex;
+  }
 }

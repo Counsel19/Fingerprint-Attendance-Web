@@ -5,8 +5,13 @@
 .take__attendanceDetails {
   flex: 15;
   margin: 0 1rem;
+  
 }
 
+.take__attendanceWrapper{
+  display: flex;
+  flex-direction: column;
+}
 .take__attendanceWrapper h1 {
   font-size: 1.5rem;
   border-bottom: 3px solid green;
@@ -20,6 +25,7 @@
   column-gap: 2rem;
   align-items: center;
   margin-bottom: 1rem;
+  justify-content: space-between;
 }
 
 .attendance__formGroup {
@@ -42,6 +48,7 @@
   outline: none;
   font-family: "Poppins", sans-serif;
   font-size: 0.9rem;
+  background-color: #fff;
 }
 
 .attendance__formGroup input {
@@ -67,6 +74,7 @@
   transition: 0.4s;
   font-weight: 600;
   max-width: 50%;
+
 }
 
 .attendance__formGroup input[type="submit"]:hover {
@@ -74,23 +82,75 @@
   color: #118a17;
 }
 
+.take__attendance button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  padding: 0;
+  border: 1px solid #118a17 ;
+  color: #118a17;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: 0.4s;
+  font-weight: 600;
+  height: 40px;
+  align-self: center;
+  max-width: 200px;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.regNo_input {
+  flex: 0.5;
+  padding: 1rem 2rem;
+  -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+  box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: #118a17;
+}
+
+.regNo_input input {
+  background-color: #eeeded;
+  height: 2.4rem;
+  border-radius: 3px;
+  padding: 1rem;
+  border: 1px solid #c3c1c1;
+  outline: none;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.9rem;
+}
+
 .take__fingerPrint {
   display: flex;
   justify-content: space-between;
   column-gap: 2rem;
-  margin-top: 1rem;
+  margin-top: 3rem;
 }
 
 .takefingerprint__container {
   background-color: #fff;
   flex: 1;
-  padding: 1rem;
+  padding: 1rem 2rem;
   -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
   box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
 }
 
 .takefingerprint__wrapper {
-  margin: 0 2rem;
+  margin: 0 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
 }
 
 .takefingerprint__wrapper h3 {
@@ -111,57 +171,106 @@
   border: 3px solid green;
   border-radius: 20px;
   margin: 1rem 0;
+  background-color: rgb(247, 247, 247);
+}
+
+.viewStudent__background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(50, 50, 50, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
 .viewStudent__container {
-  flex: 1;
+  max-width: 600px;
   background-color: #fff;
-  -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
-  box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
   display: flex;
   flex-direction: column;
   padding: 1rem 2rem;
 }
 
-.viewStudent__container h3{
+.viewStudent__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.takefingerprint__right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.viewStudent__top button,
+.takefingerprint__container button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  padding: 0;
+  border: 0;
+  background-color: #118a17;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: 0.4s;
+  font-weight: 600;
+  max-width: 50%;
+  height: 40px;
+  width: 150px;
+}
+
+.viewStudent__container h3 {
   color: #118a17;
   margin-bottom: 1rem;
 }
-.viewStudent__inside{
+.viewStudent__inside {
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: relative;
 }
 
-
+.viewStudent__wrapper {
+  width: 60%;
+}
 .viewStudent__wrapper p {
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid rgb(218, 215, 215);
-  padding: .5rem;
-  margin: 1rem 0
+  padding: 0.5rem;
+  margin: 1rem 0;
 }
 
-.viewStudent__wrapper p span{
-  color: #50af95 ;
+.viewStudent__wrapper p span {
+  color: #50af95;
 }
 
 .viewStudent__wrapper::after {
   content: "";
   position: absolute;
-  right: 45%;
+  right: 34%;
   transform: rotate(180deg);
   width: 3px;
   height: 200px;
-  background-color:#118a17;
+  background-color: #118a17;
   top: 10%;
 }
 
 .viewStudent__container img {
   width: 30%;
-  height: 60%;
+  height: 55%;
   border-radius: 50%;
   border: 3px solid #118a17;
   object-fit: contain;
+}
+
+.enroll {
+  height: 170px;
 }

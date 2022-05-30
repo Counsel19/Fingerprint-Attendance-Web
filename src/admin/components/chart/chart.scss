@@ -5,8 +5,13 @@
   padding: 10px;
   color: gray;
   background-color: #fff;
-
-
+  @media screen and (max-width: 768px) {
+    &{
+      
+      overflow-x: auto;
+    }
+  }
+  
   .title {
     margin-bottom: 20px;
   }

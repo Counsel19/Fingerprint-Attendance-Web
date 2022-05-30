@@ -16,7 +16,7 @@ const CourseTabelCell = ({ row }) => {
           <p key={index}>{lecturer}</p>
         ))}
       </TableCell>
-      <TableCell align="left">{row.num_students_offering}</TableCell>
+      <TableCell align="right">{row.num_students_offering}</TableCell>
     </>
   );
 };

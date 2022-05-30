@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MdLogin, MdLogout } from "react-icons/md";
 import { AiOutlineHome } from "react-icons/ai";
+import MenuIcon from "@mui/icons-material/Menu";
 import "./navBar.css";
+import { DataContext } from "../../context/dataContext";
 
 const NavBar = ({ currentUser }) => {
+  const [showMenu, setShowMenu] = useState(false);
+  const {showSidebar, setShowSidebar } = useContext(DataContext);
   const navigate = useNavigate();
+  const handleToggleMenu = () => {
+    setShowMenu(!showMenu);
+  };
+
+  const handleToggleSidebar = () => {
+    setShowSidebar(!showSidebar)
+  }
 
   const handleSignout = async () => {
     try {
@@ -23,7 +34,6 @@ const NavBar = ({ currentUser }) => {
       } else {
         navigate("/");
         window.location.reload();
-        localStorage.removeItem("currentUser");
       }
     } catch (error) {
       console.log(error);
@@ -65,17 +75,33 @@ const NavBar = ({ currentUser }) => {
             </Link>
           </div>
 
-      
+          <div className="nav__dropdown">
+            <MenuIcon onClick={handleToggleMenu} />
+            {showMenu && (
+              <div className="dropdown__inner">
+                <Link to="/signin" className="dropdown__item">
+                  Log In
+                </Link>
+                <hr />
+                <Link to="/signin-admin" className="dropdown__item">
+                  Log In Admin
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
       ) : (
         <div className="navbar_dashboard">
-          <Link to="/dashboard" className="signin__btn">
-            <AiOutlineHome className="nav__icon" />
-            <span>Dashboard</span>
-          </Link>
-          <div onClick={handleSignout} className="signin__btn">
-            <MdLogout className="nav__icon" />
-            <span>Log Out</span>
+          <div className="nav__left"onClick={handleToggleSidebar}> <MenuIcon /> Biometric Attendace Management System</div>
+          <div className="nav__right">
+            <Link to="/dashboard" className="signin__btn">
+              <AiOutlineHome className="nav__icon" />
+              <span>Dashboard</span>
+            </Link>
+            <div onClick={handleSignout} className="signin__btn">
+              <MdLogout className="nav__icon" />
+              <span>Log Out</span>
+            </div>
           </div>
         </div>
       )}

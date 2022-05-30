@@ -1,15 +1,13 @@
 import { createContext, useState } from "react";
 
-
 const DataContext = createContext();
 
 const DataContextProvider = ({ children }) => {
-
-  const [allUsers, setAllUsers] = useState([]);
+  const [allUsers, setAllUsers] = useState(null);
+  const [allStudents, setAllStudents] = useState(null);
   const [currentUser, setCurrentUser] = useState([]);
   const [adminUser, setAdminUser] = useState([]);
   const [singleUser, setSingleUser] = useState(null);
-  const [allStudents, setAllStudents] = useState([]);
   const [attendanceDetails, setAttendanceDetails] = useState({
     course: "",
     semester: "",
@@ -27,6 +25,7 @@ const DataContextProvider = ({ children }) => {
     fiveMonth: 0,
   });
   const [q, setQ] = useState("");
+  const [showSidebar, setShowSidebar] = useState(false);
 
   return (
     <DataContext.Provider
@@ -49,6 +48,8 @@ const DataContextProvider = ({ children }) => {
         setAdminUser,
         q,
         setQ,
+        showSidebar,
+        setShowSidebar,
       }}
     >
       {children}

@@ -8,25 +8,21 @@
 
   .wrapper {
     width: 100%;
-    padding: 20px;
+    padding: 20px 0 20px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    .search {
+    .navbar__left {
       display: flex;
       align-items: center;
-      border: 0.5px solid lightgray;
-      padding: 3px;
-
-      input {
-        border: none;
-        outline: none;
-        background: transparent;
-
-        &::placeholder {
-          font-size: 12px;
-        }
+      column-gap: 1rem;
+      color: #118a17;
+      font-size: 1.1rem;
+      font-weight: 500;
+      cursor: pointer;
+      @media screen and (max-width: 524px) {
+        font-size: 0.9rem;
       }
     }
 
@@ -34,13 +30,13 @@
       display: flex;
       align-items: center;
       position: relative;
-      
+      width: 100px;
+      justify-content: flex-end;
 
       .item {
         display: flex;
         align-items: center;
         margin-right: 20px;
-
 
         .icon {
           font-size: 20px;
@@ -69,32 +65,38 @@
           right: -5px;
         }
 
-        .dropMenu{
+        .dropMenu {
           display: none;
           position: absolute;
           top: 35px;
           left: 0;
           width: 100%;
           background-color: #fff;
-          border: 1px solid rgb(209, 209, 209);;
-          padding: .5rem;
+          border: 1px solid rgb(209, 209, 209);
+          padding: 0.5rem 0;
           border-radius: 5px;
+          cursor: pointer;
 
+          .menuLogout {
+            padding: 0.5rem 0.3rem;
+          }
 
-          .menuProfile:hover, .menuLogout:hover{
+          .menuProfile:hover,
+          .menuLogout:hover {
             background-color: rgb(232, 232, 232);
-            color: aqua;
+            color: goldenrod;
             cursor: pointer;
           }
         }
 
-
-        .show{
+        .show {
           display: flex;
           flex-direction: column;
-          row-gap: .5rem;
+          row-gap: 0.5rem;
         }
       }
     }
   }
 }
+
+

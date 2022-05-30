@@ -57,7 +57,7 @@ export default function EnhancedTable({
   courseCode,
   headCells,
   handleViewAttendance,
-  searchParams
+  searchParams,
 }) {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("calories");
@@ -65,7 +65,7 @@ export default function EnhancedTable({
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const { q } = useContext(DataContext)
+  const { q } = useContext(DataContext);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -122,99 +122,101 @@ export default function EnhancedTable({
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar
-          course={courseCode}
-          singleCourse={singleCourse}
-          allCourse = {course ? true : false}
-          numSelected={selected.length}
-        />
-        <TableContainer>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
-          >
-            <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={data.length}
-              headCells={headCells}
-            />
-            <TableBody>
-              {/* if you don't need to support IE11, you can replace the `stableSort` call with:
-                 rows.slice().sort(getComparator(order, orderBy)) */}
-              {stableSort(search(data, searchParams, q), getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(row.id);
-                  const labelId = `data-table-checkbox-${index}`;
+    <Paper sx={{ width: "100%", overflow: "hidden" }}>
+      <EnhancedTableToolbar
+        course={courseCode}
+        singleCourse={singleCourse}
+        allCourse={course ? true : false}
+        numSelected={selected.length}
+      />
+      <TableContainer sx={{ maxHeight: 440 }}>
+        <Table
+          overflow="scroll"
+          aria-labelledby="tableTitle"
+          size={dense ? "small" : "medium"}
+          sx={{ minWidth: "md" }}
+        >
+          <EnhancedTableHead
+            numSelected={selected.length}
+            order={order}
+            orderBy={orderBy}
+            onSelectAllClick={handleSelectAllClick}
+            onRequestSort={handleRequestSort}
+            rowCount={data.length}
+            headCells={headCells}
+          />
+          <TableBody>
+            {stableSort(
+              search(data, searchParams, q),
+              getComparator(order, orderBy)
+            )
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row, index) => {
+                const isItemSelected = isSelected(row.id);
+                const labelId = `data-table-checkbox-${index}`;
 
-                  return (
-                    <TableRow
-                      hover
-                      onClick={(event) => handleClick(event, row.id)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.id}
-                      selected={isItemSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            "aria-labelledby": labelId,
-                          }}
-                        />
-                      </TableCell>
-                      {attendance ? (
-                        <AttendanceTableCell
-                          row={row}
-                          handleViewAttendance={handleViewAttendance}
-                        />
-                      ) : (course && !singleCourse )? (
-                        <CourseTabelCell row={row} />
-                      ) : (
-                        <CourseAttendanceTableCell
-                          row={row}
-                          handleViewAttendance={handleViewAttendance}
-                        />
-                      )}
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: (dense ? 33 : 53) * emptyRows,
-                  }}
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 20]}
-          component="div"
-          count={data.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
+                return (
+                  <TableRow
+                    hover
+                    onClick={(event) => handleClick(event, row.id)}
+                    role="checkbox"
+                    aria-checked={isItemSelected}
+                    tabIndex={-1}
+                    key={row.id}
+                    selected={isItemSelected}
+                  >
+                    <TableCell padding="checkbox">
+                      <Checkbox
+                        color="primary"
+                        checked={isItemSelected}
+                        inputProps={{
+                          "aria-labelledby": labelId,
+                        }}
+                      />
+                    </TableCell>
+                    {attendance ? (
+                      <AttendanceTableCell
+                        row={row}
+                        handleViewAttendance={handleViewAttendance}
+                      />
+                    ) : course && !singleCourse ? (
+                      <CourseTabelCell row={row} />
+                    ) : (
+                      <CourseAttendanceTableCell
+                        row={row}
+                        handleViewAttendance={handleViewAttendance}
+                      />
+                    )}
+                  </TableRow>
+                );
+              })}
+            {emptyRows > 0 && (
+              <TableRow
+                style={{
+                  height: (dense ? 33 : 53) * emptyRows,
+                }}
+              >
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 20]}
+        component="div"
+        count={data.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+        
+      />
       <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Dense padding"
+        sx={{mx: 1}}
       />
-    </Box>
+    </Paper>
   );
 }

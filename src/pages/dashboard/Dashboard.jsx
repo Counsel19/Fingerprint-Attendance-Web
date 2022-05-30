@@ -2,8 +2,8 @@ import React, { useState, useContext, useEffect } from "react";
 import { NavBar, Sidebar } from "../../components";
 import { BsFillCalendar2EventFill } from "react-icons/bs";
 import { FaUserAlt } from "react-icons/fa";
+import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import "./dashboard.css";
-// import PieChart from "../../components/PieChart";
 import { Link } from "react-router-dom";
 import { DataContext } from "../../context/dataContext";
 import { getLectureDetails } from "../../services/getService";
@@ -19,7 +19,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const getData = async () => {
-      console.log("currentUser", currentUser)
+      console.log("currentUser", currentUser);
       const data = await getLectureDetails(currentUser, semester, session);
       setAttendanceSummary(data);
     };
@@ -30,10 +30,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard__container">
       <div className="dashboard__wrapper">
-        <div className="dashboard__sidebar">
-          <Sidebar />
-          {console.log("attendanceSummary", attendanceSummary)}
-        </div>
+        <Sidebar />
         <div className="dashboard">
           {attendanceSummary.length > 0 ? (
             <>
@@ -58,12 +55,10 @@ const Dashboard = () => {
               </div>
 
               <div className="dashboard__content">
-                <div className="num__lectures">
-                  <h3>Number of Lectures</h3>
-
-                  <div className="num__lectureDetails">
-                    {attendanceSummary.map((data) => (
-                      <div key={data.course} className="course__data">
+                <div className="num__lectureDetails">
+                  {attendanceSummary.map((data) => (
+                    <div key={data.course} className="course__data">
+                      <div className="course__dataInside">
                         <p>{data.course}</p>
                         <h1>{data.num_of_lectures}</h1>
                         <Link
@@ -73,8 +68,10 @@ const Dashboard = () => {
                           View Attendance
                         </Link>
                       </div>
-                    ))}
-                  </div>
+
+                      <DoneOutlineIcon className="lecture__icon" />
+                    </div>
+                  ))}
                 </div>
               </div>
 
@@ -82,7 +79,6 @@ const Dashboard = () => {
                 {console.log("attendanceSummary", attendanceSummary)}
                 {attendanceSummary.map((data) => (
                   <div key={data.course} className="chart__1">
-                    
                     <SingleCourseChart
                       title={`Attendance Chart for ${data.course}`}
                       aspect={2 / 1}

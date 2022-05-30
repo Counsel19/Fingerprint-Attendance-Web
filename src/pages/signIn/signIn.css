@@ -1,94 +1,118 @@
-
-
 .signIn__wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 4rem;
-    padding: 5rem;
-    height: 500px;
-    column-gap: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4rem;
+  padding: 5rem;
+  height: 500px;
+  column-gap: 2rem;
+}
+
+.signIn__details {
+  flex-grow: 0.7;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 500px;
+}
+
+.signIn__info {
+  flex-grow: 0.3;
+  background: rgb(17, 138, 23);
+  background: linear-gradient(142deg, rgba(27, 185, 35, 0.8), rgb(28, 76, 3));
+  height: 100%;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.signIn__info h1 {
+  font-size: 3rem;
+}
+
+.signIn__details h2 {
+  margin: 0 0 1rem;
+}
+
+.signIn__details form {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+  width: 100%;
+}
+
+.signIn__details form input {
+  height: 2.4rem;
+  border-radius: 3px;
+  padding: 1rem;
+  border: 1px solid #c3c1c1;
+  outline: none;
+  font-family: "Poppins", sans-serif;
+}
+
+.signIn__details form input:last-child {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  background-color: #118a17;
+  height: 2.4rem;
+  padding: 0.7rem;
+  margin-top: 1rem;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: 0.4s;
+  font-weight: 600;
+}
+
+.signIn__details form input:last-child:hover {
+  background-color: #fff;
+  color: #118a17;
+}
+
+signIn__details form input:last-child:disabled,
+input[disabled] {
+  opacity: 0.5;
+}
+
+.signIn__text {
+  margin-top: 1.5rem;
+  color: #118a17;
+}
+
+.signIn__text:hover {
+  text-decoration: underline;
+}
+
+@media screen and (max-width: 900px) {
+  .signIn__wrapper {
+    padding: 5rem 2rem;
   }
-  
+
+  .signIn__info h1 {
+    font-size: 2rem;
+  }
+  .signIn__info p {
+    font-size: 0.9rem;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .signIn__info {
+    display: none;
+  }
   .signIn__details {
-      flex-grow: .7;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    max-width: 500px;
-  }
-
-  .signIn__info{
-      flex-grow: .3;
-    background: rgb(17, 138, 23);
-    background: linear-gradient(
-      142deg,
-      rgba(27, 185, 35, 0.8),
-      rgb(28, 76, 3)
-    );
-    height: 100%;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .signIn__info h1{
-      font-size: 3rem;
-  }
-  
-  .signIn__details h2{
-      margin: 0  0 1rem;
-  }
-  
- .signIn__details form {
-    display: flex;
-    flex-direction: column;
-    row-gap: 1rem;
     width: 100%;
-   
+    margin: 0 auto;
+    padding: 0 4rem;
   }
-  
-  .signIn__details form input {
-    height: 2.4rem;
-    border-radius: 3px;
-    padding: 1rem;
-    border: 1px solid #c3c1c1;
-    outline: none;
-    font-family: 'Poppins', sans-serif;
-  }
-  
-  .signIn__details form input:last-child {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-    background-color: #118a17;
-    height: 2.4rem;
-    padding: .7rem;
-    margin-top: 1rem;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: .4s;
-    font-weight: 600;
-  }
+}
 
-  .signIn__details form input:last-child:hover{
-    background-color: #fff;
-    color: #118a17;
+@media screen and (max-width: 450px) {
+  .signIn__details {
+    padding: 0 2rem;
   }
-
-  signIn__details form input:last-child:disabled, input[disabled]{
-    opacity: .5;
-  }
-  
-  .signIn__text{
-      margin-top: 1.5rem;
-      color: #118a17;
-  }
-
-  .signIn__text:hover{
-    text-decoration: underline;
-  }
+}

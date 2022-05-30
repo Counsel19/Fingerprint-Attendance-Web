@@ -5,11 +5,10 @@ import "./signInAsAdmin.css";
 import { DataContext } from "../../context/dataContext";
 
 const SignInAsAdmin = () => {
- 
   const { setAdminUser } = useContext(DataContext);
   const navigate = useNavigate();
-  const location = useLocation()
-  const from = location?.state?.from?.pathname || "/admin"
+  const location = useLocation();
+  const from = location?.state?.from?.pathname || "/admin";
 
   const [admin, setAdmin] = useState({
     email: "",
@@ -33,7 +32,7 @@ const SignInAsAdmin = () => {
     try {
       const res = await fetch("http://localhost:3001/auth/login", {
         method: "POST",
-        credentials: 'include',
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -42,11 +41,12 @@ const SignInAsAdmin = () => {
           password,
         }),
       });
+      const data = await res.json();
 
       if (res.status === 400 || !res) {
-        window.alert("Error somewhere!");
+        window.alert(data.message);
+        setLoading(false);
       } else {
-        const data = await res.json();
         const admin = data.data._doc;
 
         admin["id"] = admin["_id"];
@@ -54,8 +54,8 @@ const SignInAsAdmin = () => {
 
         if (admin.isAdmin) {
           setAdminUser(admin);
-          
-          navigate(from, {replace: true});
+
+          navigate(from, { replace: true });
         } else {
           window.alert("User Account exist, but not an admin");
           setLoading(false);
@@ -96,7 +96,10 @@ const SignInAsAdmin = () => {
           </form>
 
           <p className="signInAsAdmin__text">
-            Not an Admin? <Link to="/signin" className="to_signin">Log In as a Staff</Link>
+            Not an Admin?{" "}
+            <Link to="/signin" className="to_signin">
+              Log In as a Staff
+            </Link>
           </p>
         </div>
       </div>

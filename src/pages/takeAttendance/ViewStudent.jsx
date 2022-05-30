@@ -1,9 +1,14 @@
 import React from "react";
+import AddIcon from '@mui/icons-material/Add';
 
-const ViewStudent = () => {
+const ViewStudent = ({setShowView}) => {
   return (
     <div className="viewStudent__container">
+      <div className="viewStudent__top">
         <h3>View Student</h3>
+        <button onClick={() =>setShowView(false)}> <AddIcon /> Add Student</button>
+      </div>
+
       <div className="viewStudent__inside">
         <div className="viewStudent__wrapper">
           <p>

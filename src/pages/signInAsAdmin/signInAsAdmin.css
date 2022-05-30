@@ -2,10 +2,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  column-gap: 2rem;
   margin-top: 4rem;
   padding: 5rem;
   height: 500px;
+  column-gap: 2rem;
 }
 
 .signInAsAdmin__info {
@@ -79,6 +79,32 @@
   color: #118a17;
 }
 
-.to_signin:hover{
+.to_signin:hover {
   text-decoration: underline;
+}
+
+@media screen and (max-width: 900px) {
+  .signInAsAdmin__wrapper {
+    padding: 5rem 2rem;
+  }
+
+  .signInAsAdmin__info h1 {
+    font-size: 2rem;
+  }
+  .signInAsAdmin__info p {
+    font-size: 0.9rem;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .signInAsAdmin__info {
+    display: none;
+  }
+
+}
+
+@media screen and (max-width: 450px) {
+  .signInAsAdmin__details {
+    padding: 0 2rem;
+  }
 }

@@ -6,3 +6,5 @@ export {default as TakeAttendanceForm} from "./takeAttendance/TakeAttendanceForm
 export {default as ReportForm} from "./report/ReportForm"
 export {default as StudentStats} from "./report/StudentStats"
 export {default as SingleCourseList} from "./singleCourseList/SingleCourseList"
+export {default as UserEdit} from "./userEdit/UserEdit"
+export {default as UserChangePassword} from "./userEdit/UserChangePassword"

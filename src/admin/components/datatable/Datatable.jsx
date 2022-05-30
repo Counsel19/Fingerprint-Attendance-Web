@@ -1,8 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import "./datatable.scss";
-import { DataGrid } from "@mui/x-data-grid";
 import { userColumns, studentColumns } from "../../datatablesource";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { DataContext } from "../../../context/dataContext";
 import { SlidingPebbles } from "react-spinner-animated";
 import "react-spinner-animated/dist/index.css";
@@ -13,9 +12,7 @@ import {
   getSingleStudent,
   getAttendanceDetails,
 } from "../../../services/getService";
-import AttendanceInfo from "../attendanceInfo/AttendanceInfo";
-import SearchInput from "../../../components/input-form/SearchInput";
-import { search } from "../../../services/search";
+import  Datagrid  from "./Datagrid";
 
 const Datatable = ({ student, user, attendanceData }) => {
   const location = useLocation();
@@ -27,20 +24,24 @@ const Datatable = ({ student, user, attendanceData }) => {
   const { allUsers, setAllUsers, allStudents, setAllStudents, q, adminUser } =
     useContext(DataContext);
 
-  const [searchParams] = useState(
-    user
-      ? ["firstname", "lastname", "email", "department", "faculty", "rank"]
-      : [
-          "firstname",
-          "middlename",
-          "lastname",
-          "reg_number",
-          "department",
-          "faculty",
-          "gender",
-          "level",
-        ]
-  );
+  const [searchParamsUser] = useState([
+    "firstname",
+    "lastname",
+    "email",
+    "department",
+    "faculty",
+    "rank",
+  ]);
+  const [searchParamsStudent] = useState([
+    "firstname",
+    "middlename",
+    "lastname",
+    "reg_number",
+    "department",
+    "faculty",
+    "gender",
+    "level",
+  ]);
 
   const navigate = useNavigate();
   const [deleteMessage, setDeleteMessage] = useState(null);
@@ -69,7 +70,10 @@ const Datatable = ({ student, user, attendanceData }) => {
   useEffect(() => {
     const getData = async () => {
       if (attendanceData && attendance) {
-        const singleAttendance = await getSingleAttendance(attendnaceId, adminUser.id,);
+        const singleAttendance = await getSingleAttendance(
+          attendnaceId,
+          adminUser.id
+        );
 
         const studentsRecord = await Promise.all(
           singleAttendance.students_present.map(async (studentId) => {
@@ -99,20 +103,24 @@ const Datatable = ({ student, user, attendanceData }) => {
   }, [adminUser.id, attendnaceId, setAllStudents, student]);
 
   const handleDelete = (id) => {
-    setAllUsers(allUsers.filter((item) => item.id !== id));
-    fetch(`http://localhost:3001/api/users/${id}`, {
-      method: "DELETE",
-    }).then((res) => {
-      if (res.ok) {
-        res.json();
-        setDeleteMessage("Deleted Succusfully");
-        setTimeout(() => {
-          setDeleteMessage(null);
-        }, 3000);
-      } else {
-        console.log("Request Error");
-      }
-    });
+    // eslint-disable-next-line no-restricted-globals
+    let proceed = confirm("Are you sure You want to delete?");
+    if (proceed) {
+      setAllUsers(allUsers?.filter((item) => item.id !== id));
+      fetch(`http://localhost:3001/api/users/${id}`, {
+        method: "DELETE",
+      }).then((res) => {
+        if (res.ok) {
+          res.json();
+          setDeleteMessage("Deleted Succusfully");
+          setTimeout(() => {
+            setDeleteMessage(null);
+          }, 3000);
+        } else {
+          console.log("Request Error");
+        }
+      });
+    }
   };
 
   const handleView = async (id) => {
@@ -147,90 +155,45 @@ const Datatable = ({ student, user, attendanceData }) => {
   ];
   return (
     <>
-      {!attendanceData ? (
-        <div
-          style={{ display: "flex", flexDirection: "column", height: "92%" }}
-          className="datatable"
-        >
-          <div className="datatableTitle">
-            {!student ? "All Lecturers" : "All Students"}
-            <SearchInput />
-            <Link
-              to={!student ? "/admin/users/new" : "/admin/students/new"}
-              className="link"
-            >
-              Add New
-            </Link>
-          </div>
-          <DataGrid
-            className="datagrid"
-            rows={search(!student ? allUsers : allStudents, searchParams, q)}
-            columns={
-              !student
-                ? userColumns.concat(actionColumn)
-                : studentColumns.concat(actionColumn)
-            }
-            pageSize={9}
-            rowsPerPageOptions={[1]}
-            checkboxSelection
-          />
-        </div>
-      ) : attendanceData ? (
-        <>
-          {attendance && attendanceRecord ? (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                height: "92%",
-              }}
-              className="datatable"
-            >
-              <div className="datatableTitle">
-                Attendance Record
-                <SearchInput />
-                <Link to={"/admin/students/new"} className="link">
-                  Add New
-                </Link>
-              </div>
-
-              <AttendanceInfo attendanceRecord={attendanceRecord} />
-
-              <DataGrid
-                className="datagrid"
-                rows={search(attendanceRecord?.data, searchParams, q)}
-                columns={
-                  !student
-                    ? userColumns.concat(actionColumn)
-                    : studentColumns.concat(actionColumn)
-                }
-                pageSize={7}
-                rowsPerPageOptions={[7]}
-                checkboxSelection
-              />
-            </div>
-          ) : (
-            <div>
-              <SlidingPebbles
-                text={"Loading..."}
-                bgColor={"#fff"}
-                center={true}
-                width={"150px"}
-                height={"150px"}
-              />
-            </div>
-          )}
-        </>
+      {user && allUsers ? (
+        <Datagrid
+          title="All Lecturers"
+          addLink="/admin/users/new"
+          data={allUsers}
+          searchParams={searchParamsUser}
+          q={q}
+          columns={userColumns}
+          actionColumn={actionColumn}
+        />
+      ) : student && allStudents ? (
+        <Datagrid
+          title="All Students"
+          addLink="/admin/students/new"
+          data={allStudents}
+          searchParams={searchParamsStudent}
+          q={q}
+          columns={studentColumns}
+          actionColumn={actionColumn}
+        />
+      ) : attendanceData && attendanceRecord ? (
+        <Datagrid
+          title="Attendance Record"
+          addLink="/admin/students/new"
+          data={attendanceRecord?.data}
+          searchParams={searchParamsStudent}
+          q={q}
+          columns={studentColumns}
+          actionColumn={actionColumn}
+          attendanceRecord={attendanceRecord}
+        />
       ) : (
-        <div>
-           <SlidingPebbles
-                text={"Loading..."}
-                bgColor={"#fff"}
-                center={true}
-                width={"150px"}
-                height={"150px"}
-              />
-        </div>
+        <SlidingPebbles
+          text={"Loading..."}
+          bgColor={"#fff"}
+          center={true}
+          width={"150px"}
+          height={"150px"}
+        />
       )}
     </>
   );

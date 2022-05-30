@@ -4,13 +4,17 @@ import AdminSidebar from "../../components/adminSidebar/AdminSidebar";
 import Navbar from "../../components/navbar/Navbar";
 import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { userInputs } from "../../formSource";
+import { userInputs, studentInputs } from "../../formSource";
 import {
   handleCreateStudents,
   handleCreateLecturer,
   handleCreateCourse,
 } from "../../../services/createService";
 import { validateCourse } from "../../../services/validate";
+import "../../../pages/takeAttendance/takeAttendanceForm.css";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import useScript from "../../../hooks/useScript";
 
 const New = ({ inputs, title, newCourse }) => {
   const userInit = {
@@ -43,6 +47,7 @@ const New = ({ inputs, title, newCourse }) => {
     num_students_offering: 0,
     course_lecturers: [],
   };
+  let fingerprint = ["Thumb", "Index", "Middle", "Ring", "Little"];
 
   const [user, setUser] = useState(userInit);
   const [student, setStudent] = useState(studentInit);
@@ -54,17 +59,22 @@ const New = ({ inputs, title, newCourse }) => {
   const [currentCourseLecturer, setCurrentCourseLecturer] = useState("");
   const [url, setUrl] = useState("");
   const [file, setFile] = useState(null);
-
+  const [index, setIndex] = useState(0);
+  const [pngImage, setPngImage] = useState(null)
   const handleIncrementInput = (name) => {
     setCourseLecturing(courseLecturing + 1);
     setCourseLecturers(courseLecturers + 1);
-    
+
     if (name === "lecturer") {
       let lecturers = course.course_lecturers;
       lecturers.push(currentCourseLecturer);
       setCourse({ ...course, course_lecturers: lecturers });
     }
   };
+
+  //Including Scanner Script file
+  useScript("https://js.camsunit.com/jquery-1.11.3.min.js")
+  useScript("https://js.camsunit.com/camsScanner.js")
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
@@ -107,6 +117,33 @@ const New = ({ inputs, title, newCourse }) => {
         : setCourse({ ...course, [name]: value });
     }
   };
+
+  const handleCapture = async () => {
+    const returnPNGImage = true; 
+    
+    // eslint-disable-next-line no-undef
+     const data = capture(process.env.REACT_APP_SCANNER_API_KEY, returnPNGImage)
+    
+     function onSuccess(data) {
+      console.log(data);
+      var plainData = data;
+      //write the program to decrypt if security key is set in API monitor for the scanner
+    
+      // eslint-disable-next-line no-undef
+      const successData = getScannerSuccessData(plainData);
+    
+      if (successData.operation === "Capture") {
+        setPngImage("data:image/png;base64," + successData.image) ;
+    
+        
+        const temp =  successData.template;
+        
+      }
+    }
+
+    onSuccess(data)
+
+  }
 
   const handleCreate = async (event) => {
     event.preventDefault();
@@ -179,6 +216,20 @@ const New = ({ inputs, title, newCourse }) => {
                   style={{ display: "none" }}
                 />
               </div>
+              {studentInputs && (
+                <>
+                  <p>{`Place right ${fingerprint[index]} finger on scanner to enroll`}</p>
+
+                  <div className="capture__inner">
+                    <ArrowBackIosNewIcon onClick={() => index >= 1 && setIndex(index - 1)} />
+                    <div className="view__capture enroll" style={pngImage && {backgroundImage: url(pngImage)}}></div>
+                    <ArrowForwardIosIcon onClick={() => index <= 3 && setIndex(index + 1)} />
+                  </div>
+                  <button disabled={loading} type="submit" onClick={handleCapture}>
+                    Capture
+                  </button>
+                </>
+              )}
             </div>
           )}
           <div className="right">
