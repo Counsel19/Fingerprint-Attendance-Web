@@ -62,7 +62,7 @@
   background-color: #118a17;
   padding: 0;
   margin-top: 1rem;
-  border-radius: 25px;
+  border-radius: .5rem;
   cursor: pointer;
   transition: 0.4s;
   font-weight: 600;
@@ -98,13 +98,11 @@
 
 @media screen and (max-width: 700px) {
   .signInAsAdmin__info {
-    display: none;
+  display: none;
   }
-
-}
-
-@media screen and (max-width: 450px) {
   .signInAsAdmin__details {
-    padding: 0 2rem;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
   }
 }
