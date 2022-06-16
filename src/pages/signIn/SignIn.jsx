@@ -31,7 +31,7 @@ const SignIn = () => {
 
     const { email, password } = user;
     try {
-      const res = await fetch("http://localhost:3001/auth/login", {
+      const res = await fetch("https://fingerprintattendanceserver.herokuapp.com/auth/login", {
         method: "POST",
         credentials: "include",
         headers: {

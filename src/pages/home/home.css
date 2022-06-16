@@ -7,12 +7,23 @@
 }
 
 .banner {
-  background: rgb(17, 138, 23);
-  background: linear-gradient(142deg, rgba(27, 185, 35, 0.8), rgb(28, 76, 3));
+  background: linear-gradient(
+      142deg,
+      rgba(27, 185, 35, 0.7),
+      rgb(28, 76, 3, 0.7)
+    ),
+    url("../../../public/images/finger.png");
+  background-position: center;
   text-align: center;
-  padding: 4rem 20rem;
+  padding: 0 20rem;
   color: #fff;
   margin-top: 3rem;
+  height: 25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 }
 
 .banner h1 {
@@ -22,7 +33,7 @@
 }
 
 .banner p {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 300;
 }
 .home__container section {
@@ -30,68 +41,54 @@
 }
 
 .home__container section:last-of-type {
-  padding-bottom: 5rem;
+  padding-bottom: 2rem;
 }
 
 section > h2 {
-  color: #118a17;
-  margin-bottom: 2rem;
-}
-
-.article-details {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  column-gap: 5rem;
-}
-
-.article-details:first-of-type {
-  margin-bottom: 2rem;
-}
-
-.about__img {
-  height: 20rem;
-  width: 24rem;
-  object-fit: contain;
-}
-
-.about__img:first-of-type {
-  object-fit: cover;
-}
-
-.about__img:last-of-type {
-  justify-content: flex-end;
-}
-
-.article-details h1 {
   font-size: 2rem;
   font-weight: 400;
   margin-bottom: 1rem;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid #ccc;
   width: fit-content;
+  color: #205767;
+}
+
+.article-details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem;
+}
+
+.about__img {
+  width: 100%;
+  border-radius: 0.5rem;
+  object-fit: cover;
 }
 
 .article-details p {
   font-size: 1.2rem;
   line-height: 1.6rem;
   font-weight: 300;
+  margin-bottom: 0.8rem;
 }
 
 .solution__details {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+#solutions_offered {
+  margin-bottom: 2rem;
 }
 
 .card {
   background-color: #fff;
-  border: 2px solid #ccc;
   display: flex;
   flex-direction: column;
-  margin: 1rem;
-  align-items: center;
-  justify-content: center;
   padding: 2rem 3.5rem;
+  border-radius: 0.25rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 .card__icon {
@@ -102,7 +99,9 @@ section > h2 {
 
 .card h2 {
   margin-bottom: 1rem;
+  margin-left: 0;
   font-weight: 300;
+  color: #205767;
 }
 
 .card p {
@@ -112,7 +111,7 @@ section > h2 {
 
 @media screen and (max-width: 1122px) {
   .banner {
-    padding: 2rem;
+    padding: 0 10rem;
   }
 
   .banner h1 {
@@ -122,47 +121,110 @@ section > h2 {
   }
 
   .banner p {
-    font-size: 1.1rem;
+    font-size: 1.07rem;
     font-weight: 300;
   }
 
-  section h2 {
-    margin-left: 1.4rem;
+  section > h2 {
+    font-size: 1.5rem;
   }
   .home__container section {
     padding: 2rem 1rem 0;
   }
-  article {
-    padding: 0 1.4rem;
+
+  .article-details p{
+    font-size: 1rem;
+  }
+  
+  .card h2 {
+    font-size: 1.2rem;
   }
 
-  .article-details h1 {
-    font-size: 1.5rem;
+ .card p {
+    font-size: 1rem;
   }
 
-  .article-details p {
-    font-size: 1.1rem;
-  }
+.card__icon {
+  font-size: 2.7rem;
+}
+
 
   .about__img {
-    height: 100%;
     width: 100%;
     margin: 1rem 0;
+  
+  }
+}
+@media screen and (max-width: 750px) {
+  .banner {
+    padding: 0 5rem;
+    height: 18rem;
+    background-size: 150%;
+    background-repeat: no-repeat;
+  }
+}
+
+@media screen and (max-width: 595px) {
+  .banner {
+    padding: 0 2rem;
+    background-size: 250%;
+    
   }
 }
 
 @media screen and (max-width: 700px) {
+  section > h2 {
+    margin-left: 1rem;
+    font-size: 1.5rem;
+  }
+
   .article-details {
     display: flex;
     flex-direction: column;
     margin: 1rem;
+    align-items: flex-start;
+  }
+
+  .article-details img {
+    order: -1;
+    border-radius: .5rem;
+    
+  }
+
+  .article-details p{
+    font-size: .9rem;
   }
 
   .solution__details {
     display: flex;
     flex-direction: column;
+    gap: 0;
   }
   .card {
-    margin: 0 0 1rem 0;
+    margin: 0 1rem 1rem 1rem;
+  }
+
+  .card h2 {
+    font-size: 1.1rem;
+  }
+
+  .card p {
+    font-size: .9rem;
+  }
+}
+
+@media screen and (max-width: 375px) {
+
+  .banner{
+    padding: 0 1rem;
+  }
+  .banner h1 {
+    font-size: 1.4rem;
+    
+  }
+  
+  .banner p {
+    font-size: .95rem;
+   
   }
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./table.scss";
 import CourseTable from "../courseTable/CourseTable";
 import AttendanceTable from "../attendanceTable/AttendanceTable";
@@ -6,42 +6,35 @@ import {
   getAllCourses,
   getAttendanceDetails,
 } from "../../../services/getService";
-import { formatDistance } from "date-fns";
+
 import { useNavigate } from "react-router-dom";
 import { SlidingPebbles } from "react-spinner-animated";
 import "react-spinner-animated/dist/index.css";
+import { DataContext } from "../../../context/dataContext";
 
 const List = ({ allAttendance, recentAttendance }) => {
+  const { adminUser } = useContext(DataContext)
   const [attendance, setAttendance] = useState(null);
   const [courseList, setCourseList] = useState([]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const d = Date.now();
-    const yesterday = d - 48 * 60 * 60 * 1000;
     const getData = async () => {
       if (!recentAttendance) {
-        const res = await getAttendanceDetails(allAttendance);
-       
+        const res = await getAttendanceDetails(adminUser.id, allAttendance);
+
         setAttendance(res);
       } else {
-        const res = await getAttendanceDetails(allAttendance);
-        const attendanceEditted = res
-          .filter((data) => data.date > yesterday)
-          .map((data) => ({
-            ...data,
-            date: formatDistance(Number(data.date), Date.now(), {
-              addSuffix: true,
-            }),
-          }));
+        const res = await getAttendanceDetails(adminUser.id, allAttendance);
+      
 
-        setAttendance(attendanceEditted);
+        setAttendance(res);
       }
     };
 
     getData();
-  }, [allAttendance, recentAttendance, setAttendance]);
+  }, [adminUser.id, allAttendance, recentAttendance, setAttendance]);
 
   useEffect(() => {
     const getCourses = async () => {
@@ -59,19 +52,19 @@ const List = ({ allAttendance, recentAttendance }) => {
 
   return (
     <>
-      {(!attendance)? (
-        <div >
+      {!attendance ? (
+        <div>
           <SlidingPebbles
             text={"Loading..."}
             bgColor={"#fff"}
             center={true}
-            width={"150px"}
-            height={"150px"}
+            width={"100px"}
+            height={"100px"}
           />
         </div>
       ) : (
         <>
-          {(allAttendance || recentAttendance) ? (
+          {allAttendance || recentAttendance ? (
             <AttendanceTable
               handleViewAttendance={handleViewAttendance}
               attendance={attendance}

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext} from "react";
 import { NavBar, Sidebar } from "../../components";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FaGraduationCap } from "react-icons/fa";
@@ -7,9 +7,11 @@ import { useNavigate } from "react-router-dom";
 import "./profile.css";
 import { DataContext } from "../../context/dataContext";
 
+
 const Profile = () => {
   const { currentUser } = useContext(DataContext);
   const navigate = useNavigate();
+
   const handleGotoEdit = () => {
     navigate("/profile/edit")
   }

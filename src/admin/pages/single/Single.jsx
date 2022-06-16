@@ -6,7 +6,6 @@ import Chart from "../../components/chart/Chart";
 import SingleTable from "../../components/singleTable/SingleTable";
 import {
   getLecturerSubmittedAttendance,
-
   getSingleUser,
 } from "../../../services/getService";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -61,6 +60,7 @@ const Single = () => {
 
   return (
     <div className="single">
+
       <AdminSidebar />
       <div className="singleContainer">
         <Navbar />

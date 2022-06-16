@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
   courseInputs,
@@ -32,6 +32,7 @@ import {
   StudentStats,
   UserEdit,
   UserChangePassword,
+  PageNotFound,
 } from "./pages";
 import { DataContext } from "./context/dataContext";
 import SignInAsAdmin from "./pages/signInAsAdmin/SignInAsAdmin";
@@ -57,18 +58,11 @@ function App() {
         <Router>
           <Routes>
             <Route path="/">
-              <Route
-                index
-                element={
-                  <IsUserRedirectUser loggedInPath="/dashboard">
-                    <Home />
-                  </IsUserRedirectUser>
-                }
-              />
+              <Route index element={<Home />} />
               <Route
                 path="signin"
                 element={
-                  <IsUserRedirectUser loggedInPath="/da shboard">
+                  <IsUserRedirectUser loggedInPath="/dashboard">
                     <SignIn />
                   </IsUserRedirectUser>
                 }
@@ -123,7 +117,7 @@ function App() {
                   </ProtectedRouteUser>
                 }
               />
-              
+
               <Route
                 path="student-stats"
                 element={
@@ -278,6 +272,7 @@ function App() {
                 />
               </Route>
             </Route>
+            <Route path="*" element={<PageNotFound />} />
           </Routes>
         </Router>
       )}

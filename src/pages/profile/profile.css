@@ -6,7 +6,7 @@
   }
   
  .profile__content{
-  flex: 15;
+  flex: 6;
   margin: 0 1rem .5rem;
  }
 
@@ -24,7 +24,7 @@
    padding: 1.5rem 4rem;
    background-color: #fff;
    display: flex;
-   column-gap: 10rem;
+   gap: 10rem;
    line-height: 1.8rem;
  }
 
@@ -70,3 +70,20 @@
  .general{
    margin: 1.5rem 0;
  }
+
+ @media screen  and (max-width: 822px) {
+   .profile__details{
+     gap: 3rem;
+     padding: 1rem 2rem;
+   }
+ }
+
+ @media screen  and (max-width: 670px) {
+  .profile__details{
+    flex-direction: column;
+  }
+
+  .profile__detailsCol1{
+    align-items: flex-start;
+  }
+}

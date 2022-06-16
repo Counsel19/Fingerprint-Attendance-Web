@@ -62,7 +62,7 @@
   height: 2.4rem;
   padding: 0.7rem;
   margin-top: 1rem;
-  border-radius: 25px;
+  border-radius: .5rem;
   cursor: pointer;
   transition: 0.4s;
   font-weight: 600;

@@ -15,7 +15,7 @@ const MobileUserNav = () => {
 
   const handleSignout = async () => {
     try {
-      const res = await fetch("http://localhost:3001/auth/logout", {
+      const res = await fetch("https://fingerprintattendanceserver.herokuapp.com/auth/logout", {
         method: "GET",
         headers: {
           Accept: "application/json",

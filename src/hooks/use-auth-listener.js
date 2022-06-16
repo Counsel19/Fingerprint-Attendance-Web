@@ -7,27 +7,31 @@ const UseAuth = () => {
 
   useEffect(() => {
     const getAuth = async () => {
-      const res = await fetch("http://localhost:3001/auth/request-login", {
-        credentials: "include",
-      });
+      try {
+        const res = await fetch("https://fingerprintattendanceserver.herokuapp.com/auth/request-login", {
+          credentials: "include",
+        });
 
-      if (res.status === 401) {
-        setAdminUser(null);
-        setCurrentUser(null);
-        setUser(null)
-      } else {
-        const userData = await res.json();
-    
-        userData["id"] = userData["_id"];
-        delete userData["_id"];
-        setUser(userData);
-
-        if (user?.isAdmin) {
-          setAdminUser(userData);
-          setCurrentUser(userData);
+        if (res.status === 401) {
+          setAdminUser(null);
+          setCurrentUser(null);
+          setUser(null);
         } else {
-          setCurrentUser(userData);
+          const userData = await res.json();
+
+          userData["id"] = userData["_id"];
+          delete userData["_id"];
+          setUser(userData);
+
+          if (user?.isAdmin) {
+            setAdminUser(userData);
+            setCurrentUser(userData);
+          } else {
+            setCurrentUser(userData);
+          }
         }
+      } catch (error) {
+        console.log(error)
       }
     };
 

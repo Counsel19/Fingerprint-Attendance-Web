@@ -3,6 +3,7 @@
 
   .homeContainer {
     flex: 6;
+    margin: 0 20px;
 
     @media screen and (max-width: 768px) {
       & {
@@ -13,7 +14,7 @@
 
     .widgets,
     .charts {
-      padding: 20px;
+      padding: 20px 0;
       gap: 20px;
       flex-wrap: wrap;
     }
@@ -24,7 +25,7 @@
     }
 
     .charts {
-      padding: 5px 20px;
+      padding: 5px 0;
       grid-template-columns: 0.4fr 1fr;
 
       @media screen and (max-width: 840px) {
@@ -38,18 +39,8 @@
       -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
       box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
       padding: 20px 0;
-      margin: 20px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-
-      @media screen and (max-width: 768px) {
-        & {
-          max-width: 724px;
-          width: 100%;
-        }
-      }
-
+  
+      
       .listTitle {
         font-weight: 500;
         color: gray;

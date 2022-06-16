@@ -96,10 +96,11 @@
 }
 
 .mobile__AdminNav {
-  position: absolute;
+  position: fixed; 
   top: 0;
   left: -100%;
   right: 0;
+  bottom: 0;
   background-color: rgba(36, 35, 35, 0.61);
   transition: 0.3s;
   min-height: 100vh;

@@ -4,7 +4,6 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import InsertChartIcon from "@mui/icons-material/InsertChart";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import AddIcon from "@mui/icons-material/Add";
@@ -19,7 +18,7 @@ const AdminSidebar = () => {
 
   const handleSignout = async () => {
     try {
-      const res = await fetch("http://localhost:3001/auth/logout", {
+      const res = await fetch("https://fingerprintattendanceserver.herokuapp.com/auth/logout", {
         method: "GET",
         headers: {
           Accept: "application/json",
@@ -31,8 +30,8 @@ const AdminSidebar = () => {
       if (res.status === 401 || !res) {
         window.alert("Problem Logging Out");
       } else {
-        navigate("/");
         window.location.reload();
+        navigate("/");
       }
     } catch (error) {
       console.log(error);
@@ -104,16 +103,9 @@ const AdminSidebar = () => {
                   <span>All Attendance</span>
                 </li>
               </Link>
-              <li>
-                <InsertChartIcon className="icon" />
-                <span>Stats</span>
-              </li>
 
               <p className="title">USER</p>
-              <li>
-                <AccountCircleOutlinedIcon className="icon" />
-                <span>Profile</span>
-              </li>
+
               <li onClick={handleSignout}>
                 <ExitToAppIcon className="icon" />
                 <span>Logout</span>
@@ -121,9 +113,7 @@ const AdminSidebar = () => {
             </ul>
           </div>
         </div>
-      ) : (
-        null
-      )}
+      ) : null}
       <MobileAdminNav />
     </>
   );

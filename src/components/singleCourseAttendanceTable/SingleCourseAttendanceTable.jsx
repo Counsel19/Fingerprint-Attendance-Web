@@ -3,7 +3,6 @@ import EnhancedTable from "../courseAttendanceTable/EnhancedTable";
 import {
   getLectureAttendanceSummary,
   getLecturerAttendanceForCourse,
-
 } from "../../services/getService";
 import { useLocation } from "react-router-dom";
 import { DataContext } from "../../context/dataContext";
@@ -60,7 +59,10 @@ const SingleCourseAttendanceTable = () => {
         course
       );
 
-        const attendanceDoc = await getLectureAttendanceSummary( attendanceData )
+      const attendanceDoc = await getLectureAttendanceSummary(
+        attendanceData,
+        currentUser.id
+      );
 
       attendanceDoc.sort((b, a) => a.date - b.date);
       setAttendance(attendanceDoc);
@@ -69,7 +71,6 @@ const SingleCourseAttendanceTable = () => {
   }, [course, currentUser.id]);
 
   const handleViewAttendance = (id) => {
-    console.log("id", id);
     navigate(`/report/${course}/${id}`);
   };
 
@@ -83,11 +84,10 @@ const SingleCourseAttendanceTable = () => {
     "students_present",
   ]);
 
-  console.log("attendance", attendance);
   return (
-    <>
+    <div className="singleCourseAttendance">
       <h1 className="tableTitle">{`Attendance for ${course}`}</h1>
-      {attendance? (
+      {attendance ? (
         <>
           <EnhancedTable
             courseCode={course}
@@ -109,7 +109,7 @@ const SingleCourseAttendanceTable = () => {
           />
         </div>
       )}
-    </>
+    </div>
   );
 };
 

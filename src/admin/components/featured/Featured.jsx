@@ -10,7 +10,7 @@ import {
 import { DataContext } from "../../../context/dataContext";
 
 const Featured = () => {
-  const { setAttendanceTrack } = useContext(DataContext);
+  const { setAttendanceTrack, adminUser } = useContext(DataContext);
   const [todayAttendanceTotal, setTodayAttendanceTotal] = useState(0);
   const [lastWeekAttendance, setLastWeekAttendance] = useState(0);
   const [currentWeekAttendance, setCurrentWeekAttendance] = useState(0);
@@ -22,7 +22,7 @@ const Featured = () => {
       const { recentRes, oneMonthRes, lastWeekRes, currentWeekRes } =
         await getAttendanceSummary();
 
-      setTodayAttendancePercentage(await getTodayAttendancePercentage());
+      setTodayAttendancePercentage(await getTodayAttendancePercentage(adminUser.id));
 
       setTodayAttendanceTotal(recentRes.length);
       setLastWeekAttendance(lastWeekRes.length);
@@ -33,7 +33,7 @@ const Featured = () => {
     };
 
     getData();
-  }, [setAttendanceTrack]);
+  }, [adminUser.id, setAttendanceTrack]);
 
   return (
     <div className="featured">
@@ -55,22 +55,23 @@ const Featured = () => {
           Previous attendance processing. Last attendance submitted may not be
           included.
         </p>
+
         <div className="summary">
-          <div className="item">
+          <div className="feature__item">
             <div className="itemTitle">Curent Week</div>
             <div className={`itemResult ${currentWeekAttendance > 1 ? "positive": "negative" } `}>
               <InfoIcon className="info__icon" />
               <div className="resultAmount">{currentWeekAttendance}</div>
             </div>
           </div>
-          <div className="item">
+          <div className="feature__item">
             <div className="itemTitle">Last Week</div>
             <div className={`itemResult ${lastWeekAttendance > 1 ? "positive": "negative" } `}>
               <InfoIcon className="info__icon"/>
               <div className="resultAmount">{lastWeekAttendance}</div>
             </div>
           </div>
-          <div className="item">
+          <div className="feature__item">
             <div className="itemTitle">Last Month</div>
             <div className={`itemResult ${lastMonthAttendance > 1 ? "positive": "negative" } `}>
               <InfoIcon className="info__icon"/>

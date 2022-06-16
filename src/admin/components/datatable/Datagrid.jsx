@@ -7,14 +7,13 @@ import AttendanceInfo from "../attendanceInfo/AttendanceInfo";
 import "./datatable.scss";
 
 const Datagrid = ({
-  title,
   addLink,
   data,
   searchParams,
   q,
   columns,
   actionColumn,
-  attendanceRecord
+  attendanceRecord,
 }) => {
   return (
     <div
@@ -22,17 +21,18 @@ const Datagrid = ({
       className="datatable"
     >
       <div className="datatableTitle">
-        {title}
         <SearchInput />
         <Link to={addLink} className="link">
           Add New
         </Link>
-      </div> 
-       {attendanceRecord && <AttendanceInfo attendanceRecord={attendanceRecord} />}
+      </div>
+      {attendanceRecord && (
+        <AttendanceInfo attendanceRecord={attendanceRecord} />
+      )}
       <DataGrid
         className="datagrid"
         rows={search(data, searchParams, q)}
-        columns={columns.concat(actionColumn)}
+        columns={actionColumn ? columns.concat(actionColumn) : columns}
         pageSize={9}
         rowsPerPageOptions={[1]}
         checkboxSelection

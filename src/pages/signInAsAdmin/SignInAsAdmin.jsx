@@ -15,6 +15,7 @@ const SignInAsAdmin = () => {
     password: "",
   });
   const [loading, setLoading] = useState(false);
+  const noInput = admin.email === "" || admin.password === "";
 
   const handleInput = (event) => {
     let name = event.target.name;
@@ -30,7 +31,7 @@ const SignInAsAdmin = () => {
     const { email, password } = admin;
 
     try {
-      const res = await fetch("http://localhost:3001/auth/login", {
+      const res = await fetch("https://fingerprintattendanceserver.herokuapp.com/auth/login", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -92,7 +93,7 @@ const SignInAsAdmin = () => {
               onChange={handleInput}
             />
 
-            <input disabled={loading} type="submit" value="Sign In" />
+            <input disabled={loading || noInput} type="submit" value="Sign In" />
           </form>
 
           <p className="signInAsAdmin__text">

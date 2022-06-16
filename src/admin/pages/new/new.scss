@@ -4,6 +4,7 @@
 
   .newContainer {
     flex: 6;
+    margin: 0 20px;
 
     @media screen and (max-width: 768px) {
       & {
@@ -17,7 +18,7 @@
       -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
       box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
       padding: 10px;
-      margin: 20px;
+      margin: 20px 0;
       display: flex;
       background-color: #fff;
       color: #118a17;
@@ -26,7 +27,6 @@
         display: flex;
         width: 100%;
         justify-content: space-between;
-        color: rgb(32, 32, 32);
         margin: 0 5rem;
 
         @media screen and (max-width: 768px) {
@@ -83,25 +83,41 @@
         align-items: center;
         justify-content: center;
         flex-direction: column;
-      
+        color: #118a17;
+
+        .left__bottom {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+
+          p {
+            color: #205767;
+          }
+
+          span {
+            color: #d3434d;
+            font-size: large;
+            font-style: 800;
+          }
+        }
 
         button {
           width: 150px;
           padding: 10px;
           border: none;
-          background-color: #118a17;
+          background-color: #205767;
           color: white;
           font-weight: bold;
           cursor: pointer;
           border: 1px solid #118a17;
           transition: 0.4s;
-          
         }
         button:hover {
           background-color: #fff;
-          color: #118a17;
+          color: #205767;
         }
-        .capture__inner{
+        .capture__inner {
           display: flex;
           gap: 1rem;
           align-items: center;
@@ -119,7 +135,6 @@
 
         .formInput {
           margin: 10px 0 40px 0;
-
 
           label {
             display: flex;
@@ -252,5 +267,9 @@
         }
       }
     }
+  }
+
+  .userEdit {
+    margin: 0 1rem 0.5rem;
   }
 }

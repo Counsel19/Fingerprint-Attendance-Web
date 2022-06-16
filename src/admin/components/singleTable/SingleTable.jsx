@@ -15,18 +15,19 @@ import {
 } from "../../../services/getService";
 
 const SingleTable = ({ attendanceData }) => {
-  const { attendance, setAttendance } = useContext(DataContext);
+  const { attendance, setAttendance, adminUser } = useContext(DataContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     const getData = async () => {
       let attendanceDoc = await Promise.all(
         attendanceData.map(async (data) => {
+
           const percentage = await getCourseAttendancePercentage({
             studentList: data.students_present,
             courseCode: data.course,
-          });
-          const lecturer = await getUserFistnameLastname(data.user_docId);
+          }, adminUser.id);
+          const lecturer = await getUserFistnameLastname(data.user_docId, data.user_docId);
           return {
             ...data,
             percentage: Math.floor(percentage),

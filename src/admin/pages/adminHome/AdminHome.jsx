@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import AdminSidebar from "../../components/adminSidebar/AdminSidebar";
 import Navbar from "../../components/navbar/Navbar";
 import "./adminHome.scss";
@@ -5,10 +6,12 @@ import Widget from "../../components/widget/Widget";
 import Featured from "../../components/featured/Featured";
 import Chart from "../../components/chart/Chart";
 import Table from "../../components/table/Table";
+import { DataContext } from "../../../context/dataContext";
 
 const AdminHome = () => {
+  const { showSidebar } = useContext(DataContext)
   return (
-    <div className="home">
+    <div className="home" styles={showSidebar ? {height: "100vh", overflow: "hidden" }: undefined}>
       <AdminSidebar />
       <div className="homeContainer">
         <Navbar />

@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import "../../admin/components/datatable/datatable.scss";
 import { DataGrid } from "@mui/x-data-grid";
 import { studentColumns } from "../../admin/datatablesource";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { DataContext } from "../../context/dataContext";
 import {
   getSingleAttendance,
@@ -15,10 +15,9 @@ import { SlidingPebbles } from "react-spinner-animated";
 import "react-spinner-animated/dist/index.css";
 import AttendanceInfo from "../../admin/components/attendanceInfo/AttendanceInfo";
 
-const Datatable = ({ attendanceData }) => {
+const Datatable = () => {
   const location = useLocation();
   let attendanceDocId = location.pathname.split("/")[3];
-  let course = location.pathname.split("/")[2];
 
   const [searchParams] = useState([
     "firstname",
@@ -31,15 +30,13 @@ const Datatable = ({ attendanceData }) => {
   ]);
 
   const [attendanceRecord, setAttendanceRecord] = useState(null);
-  const [attendance, setAttendance] = useState([]);
+  const [attendance, setAttendance] = useState(null);
 
-  const { q, currentUser } = useContext(DataContext);
-
-  const navigate = useNavigate();
+  const { q, currentUser, setViewStudent } = useContext(DataContext);
 
   useEffect(() => {
     const getData = async () => {
-      setAttendance(await getAttendanceDetails(true));
+      setAttendance(await getAttendanceDetails(currentUser.id, true));
     };
 
     getData();
@@ -52,15 +49,12 @@ const Datatable = ({ attendanceData }) => {
           attendanceDocId,
           currentUser.id
         );
-        console.log("singleAttendance", singleAttendance);
 
         const studentsRecord = await Promise.all(
           singleAttendance.students_present.map(async (studentId) => {
             return await getSingleStudent(currentUser.id, studentId);
           })
         );
-
-        console.log("studentsRecord", studentsRecord);
 
         setAttendanceRecord({
           info: attendance.filter((data) => data["id"] === attendanceDocId),
@@ -72,42 +66,19 @@ const Datatable = ({ attendanceData }) => {
     getData();
   }, [attendance, attendanceDocId, currentUser.id]);
 
-  const handleView = async (id) => {
-    navigate(`/admin/users/${id}`);
-  };
+ 
 
-  const actionColumn = [
-    {
-      field: "action",
-      headerName: "Action",
-      width: 150,
-      renderCell: (params) => {
-        return (
-          <div className="cellAction">
-            <div
-              onClick={() => handleView(params.row.id)}
-              className="viewButton"
-            >
-              View
-            </div>
-          </div>
-        );
-      },
-    },
-  ];
   return (
     <>
+      <h1 className="tableTitle">Attendance Record</h1>
       {attendance && attendanceRecord ? (
         <div
-          style={{ display: "flex", flexDirection: "column", height: "92%" }}
+          style={{ display: "flex", flexDirection: "column" }}
           className="datatable"
         >
           <div className="datatableTitle">
-            Attendance Record
-            {/* {deleteMessage && <div className="deleteMessage">{deleteMessage}</div>} */}
-
             <SearchInput />
-            <Link to={"/take-attendance-form"} className="link">
+            <Link to={"/take-attendance"} className="link">
               Take New Attendance
             </Link>
           </div>
@@ -117,7 +88,7 @@ const Datatable = ({ attendanceData }) => {
           <DataGrid
             className="datagrid"
             rows={search(attendanceRecord?.data, searchParams, q)}
-            columns={studentColumns.concat(actionColumn)}
+            columns={studentColumns}
             pageSize={9}
             rowsPerPageOptions={[1]}
             checkboxSelection

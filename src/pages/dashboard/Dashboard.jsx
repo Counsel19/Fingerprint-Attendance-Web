@@ -19,7 +19,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     const getData = async () => {
-      console.log("currentUser", currentUser);
       const data = await getLectureDetails(currentUser, semester, session);
       setAttendanceSummary(data);
     };
@@ -32,7 +31,7 @@ const Dashboard = () => {
       <div className="dashboard__wrapper">
         <Sidebar />
         <div className="dashboard">
-          {attendanceSummary.length > 0 ? (
+          {attendanceSummary?.length > 0 ? (
             <>
               <NavBar currentUser={currentUser} />
               <div className="header">
@@ -76,7 +75,6 @@ const Dashboard = () => {
               </div>
 
               <div className="charts">
-                {console.log("attendanceSummary", attendanceSummary)}
                 {attendanceSummary.map((data) => (
                   <div key={data.course} className="chart__1">
                     <SingleCourseChart

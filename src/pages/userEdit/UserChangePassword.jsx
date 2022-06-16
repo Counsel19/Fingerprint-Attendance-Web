@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NavBar, Sidebar } from "../../components";
 import { DataContext } from "../../context/dataContext";
+import "../../admin/pages/new/new.scss"
 
 const UserChangePassword = ({ inputs }) => {
     const { currentUser} = useContext(DataContext)
@@ -33,11 +34,9 @@ const UserChangePassword = ({ inputs }) => {
     event.preventDefault();
     setLoading(true);
 
-    console.log("passwords", passwords)
-
     if (passwords.newPassword === passwords.confirmPassword) {
       const res = await fetch(
-        `http://localhost:3001/api/users/${currentUser.id}/change-password`,
+        `https://fingerprintattendanceserver.herokuapp.com/api/users/${currentUser.id}/change-password`,
         {
           method: "PUT",
           credentials: "include",
@@ -52,7 +51,7 @@ const UserChangePassword = ({ inputs }) => {
 
       if (res.ok) {
         window.alert("Password Change Successfull");
-        navigate(`/prfile/edit/`);
+        navigate(`/profile/edit`);
       } else {
         window.alert(data);
         setLoading(false);
@@ -66,7 +65,7 @@ const UserChangePassword = ({ inputs }) => {
   return (
     <div className="new">
       <Sidebar />
-      <div className="newContainer">
+      <div className="newContainer userEdit">
         <NavBar currentUser={currentUser} />
         <div className="top">
           <h1>Change Password</h1>

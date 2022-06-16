@@ -8,13 +8,7 @@ const DataContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState([]);
   const [adminUser, setAdminUser] = useState([]);
   const [singleUser, setSingleUser] = useState(null);
-  const [attendanceDetails, setAttendanceDetails] = useState({
-    course: "",
-    semester: "",
-    session: "",
-    date: "",
-    students_present: [],
-  });
+  const [attendanceDetails, setAttendanceDetails] = useState(JSON.parse(localStorage.getItem("attendanceDetails")));
   const [attendance, setAttendance] = useState([]);
   const [attendanceTrack, setAttendanceTrack] = useState({
     currentMonth: 0,

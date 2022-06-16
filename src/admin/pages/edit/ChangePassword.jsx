@@ -33,11 +33,9 @@ const ChangePassword = ({ inputs }) => {
     event.preventDefault();
     setLoading(true);
 
-    console.log("passwords", passwords)
-
     if (passwords.newPassword === passwords.confirmPassword) {
       const res = await fetch(
-        `http://localhost:3001/api/users/${userId}/change-password`,
+        `https://fingerprintattendanceserver.herokuapp.com/api/users/${userId}/change-password`,
         {
           method: "PUT",
           credentials: "include",

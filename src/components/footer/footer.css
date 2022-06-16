@@ -5,6 +5,7 @@ footer {
   justify-content: space-around;
   padding: 3rem;
   align-items: center;
+  font-size: .9rem;
 }
 
 .footer__brand {
@@ -19,14 +20,14 @@ footer {
 .footer__links {
   display: flex;
   flex-direction: column;
-  row-gap: 1rem;
+  gap: 1rem;
 }
 
 .footer__links a:hover {
   text-decoration: underline;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
   footer {
     padding: 1rem;
   }
@@ -35,6 +36,6 @@ footer {
   }
 
   .footer__links {
-    row-gap: 2rem;
+    gap: 1rem;
   }
 }

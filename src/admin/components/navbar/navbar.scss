@@ -8,7 +8,6 @@
 
   .wrapper {
     width: 100%;
-    padding: 20px 0 20px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -21,8 +20,17 @@
       font-size: 1.1rem;
       font-weight: 500;
       cursor: pointer;
+
       @media screen and (max-width: 524px) {
-        font-size: 0.9rem;
+        &{
+          font-size: 0.9rem;
+        }
+      }
+
+      @media screen and (max-width: 274px) {
+        span{
+          display: none;
+        }
       }
     }
 
@@ -36,7 +44,6 @@
       .item {
         display: flex;
         align-items: center;
-        margin-right: 20px;
 
         .icon {
           font-size: 20px;

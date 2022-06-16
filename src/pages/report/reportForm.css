@@ -2,9 +2,9 @@
   display: flex;
 }
 
-.report__formDetails{
-  flex: 15;
-  margin: 0 .5rem;
+.report__formDetails {
+  flex: 6;
+  margin: 0 1rem 1rem;
 }
 
 .report__formWrapper {
@@ -17,10 +17,37 @@
   font-size: 1.06rem;
 }
 
-.report__formWrapper  h1{
-    color: #118a17;
-    margin-bottom: 2rem;
-    font-weight: 600;
-    font-size: 2rem;
+.report__formWrapper h1 {
+  color: #118a17;
+  margin-bottom: 2rem;
+  font-weight: 600;
+  font-size: 2rem;
 }
 
+@media screen and (max-width: 768px) {
+  .report__formDetails {
+    max-width: 724px;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 670px) {
+  .report__formWrapper {
+    width: 40%;
+  }
+}
+
+@media screen and (max-width: 514px) {
+  .report__formWrapper {
+    width: 50%;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .report__formWrapper {
+    width: 70%;
+  }
+  .report__formWrapper h1 {
+    font-size: 1.5rem;
+  }
+}

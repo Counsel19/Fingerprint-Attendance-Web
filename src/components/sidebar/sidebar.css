@@ -3,7 +3,7 @@
   padding: 2.8rem 0 1rem 0;
   font-size: 0.9rem;
   border: 1px solid #ccc;
-
+  flex: 1;
 }
 
 .profile {
@@ -14,11 +14,10 @@
   padding: 1rem 1rem 0;
   margin-bottom: 1.5rem;
   border-bottom: 0.3rem solid #118a17;
-  
 }
 
 .profile img {
-  width: 10rem;
+  width: 8rem;
   border: 0.3rem solid #118a17;
   border-radius: 25%;
 }
@@ -90,13 +89,13 @@
 }
 
 .mobile__userNav {
-  position: absolute;
+  position: fixed; 
   top: 0;
   left: -100%;
   right: 0;
+  bottom: 0;
   background-color: rgba(36, 35, 35, 0.61);
   transition: 0.3s;
-  min-height: 100vh;
   display: none;
   justify-content: space-between;
   overflow: hidden;
@@ -115,11 +114,10 @@
 .mobile__userNavInner {
   background-color: white;
   width: 50%;
-  
 }
 
 @media screen and (max-width: 1144px) {
-   .sidebar{
+  .sidebar {
     display: none;
   }
 }
@@ -128,5 +126,11 @@
     left: 0;
     z-index: 1000;
     display: flex;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .profile img {
+    display: none;
   }
 }

@@ -4,7 +4,6 @@ import { NavBar, Sidebar } from "../../components";
 import InputForm from "../../components/input-form/InputForm";
 import "./reportForm.css";
 import { DataContext } from "../../context/dataContext";
-import { getLecturerAttendanceForCourse } from "../../services/getService";
 
 const ReportForm = () => {
   const [course, setCourse] = useState("");
@@ -15,14 +14,6 @@ const ReportForm = () => {
   const handleViewReport = (e) => {
     e.preventDefault();
     setLoading(true);
-
-    const getData = async () => {
-      const res = await getLecturerAttendanceForCourse(currentUser.id, course);
-
-      console.log("res", res);
-    };
-
-    getData();
 
     navigate(`/report/${course}`);
   };

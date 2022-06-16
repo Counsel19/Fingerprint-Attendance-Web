@@ -3,10 +3,11 @@ import {
   getPreviousWeek,
   getCurrentWeek,
 } from "./computeDate";
+import { formatDistance } from "date-fns";
 
 export const getStudents = async (id) => {
   try {
-    const data = await fetch(`http://localhost:3001/api/students/${id}`, {
+    const data = await fetch(`https://fingerprintattendanceserver.herokuapp.com/api/students/${id}`, {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
@@ -22,7 +23,7 @@ export const getStudents = async (id) => {
         delete item["__v"];
         return item;
       });
-      console.log("studentList", studentList);
+
       return studentList;
     } else {
       console.log("Request Error");
@@ -34,7 +35,7 @@ export const getStudents = async (id) => {
 
 export const getUsers = async () => {
   try {
-    const data = await fetch("http://localhost:3001/api/users", {
+    const data = await fetch("https://fingerprintattendanceserver.herokuapp.com/api/users", {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
@@ -62,7 +63,7 @@ export const getUsers = async () => {
 
 export const getSingleUser = async (id) => {
   try {
-    const data = await fetch(`http://localhost:3001/api/users/${id}`, {
+    const data = await fetch(`https://fingerprintattendanceserver.herokuapp.com/api/users/${id}`, {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
@@ -85,7 +86,7 @@ export const getSingleUser = async (id) => {
 
 export const getAttendance = async () => {
   try {
-    const data = await fetch("http://localhost:3001/api/attendance", {
+    const data = await fetch(`https://fingerprintattendanceserver.herokuapp.com/api/attendance`, {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
@@ -110,25 +111,31 @@ export const getAttendance = async () => {
   }
 };
 
-export const getAttendanceDetails = async (allAttendance) => {
+export const getAttendanceDetails = async (id, allAttendance) => {
   const attendanceData = await getAttendance();
 
-  const yesterday = new Date(new Date().getTime() - 48 * 60 * 60 * 1000);
+  const yesterday = new Date(new Date().getTime() - 12 * 60 * 60 * 1000);
 
   if (!allAttendance) {
     const attendanceDoc = await Promise.all(
       attendanceData
         .filter((data) => data.date > Date.parse(yesterday))
         .map(async (data) => {
-          const percentage = await getCourseAttendancePercentage({
-            studentList: data.students_present,
-            courseCode: data.course,
-          });
-          const lecturer = await getUserFistnameLastname(data.user_docId);
-          let dateTime = new Date(data.date);
+          const percentage = await getCourseAttendancePercentage(
+            {
+              studentList: data.students_present,
+              courseCode: data.course,
+            },
+            id
+          );
+
+          const lecturer = await getUserFistnameLastname(id, data.user_docId);
+
           return {
             ...data,
-            date: dateTime.toLocaleString(),
+            date: formatDistance(Number(data.date), Date.now(), {
+              addSuffix: true,
+            }),
             percentage: Math.floor(percentage),
             ...lecturer,
           };
@@ -139,11 +146,15 @@ export const getAttendanceDetails = async (allAttendance) => {
   } else {
     let attendanceDoc = await Promise.all(
       attendanceData.map(async (data) => {
-        const percentage = await getCourseAttendancePercentage({
-          studentList: data.students_present,
-          courseCode: data.course,
-        });
-        const lecturer = await getUserFistnameLastname(data.user_docId);
+        const percentage = await getCourseAttendancePercentage(
+          {
+            studentList: data.students_present,
+            courseCode: data.course,
+          },
+          id
+        );
+
+        const lecturer = await getUserFistnameLastname(id, data.user_docId);
         let dateTime = new Date(data.date);
         return {
           ...data,
@@ -159,14 +170,17 @@ export const getAttendanceDetails = async (allAttendance) => {
   }
 };
 
-export const getUserFistnameLastname = async (id) => {
+export const getUserFistnameLastname = async (id, docId) => {
   try {
-    const data = await fetch(`http://localhost:3001/api/users/${id}`, {
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const data = await fetch(
+      `https://fingerprintattendanceserver.herokuapp.com/api/users/user/${id}/${docId}`,
+      {
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     if (data.ok) {
       const res = await data.json();
@@ -190,7 +204,7 @@ export const getUserFistnameLastname = async (id) => {
 export const getSingleAttendance = async (attendanceDocId, userId) => {
   try {
     const data = await fetch(
-      `http://localhost:3001/api/attendance/${userId}?attendanceId=${attendanceDocId}`,
+      `https://fingerprintattendanceserver.herokuapp.com/api/attendance/${userId}?attendanceId=${attendanceDocId}`,
       {
         credentials: "include",
         headers: {
@@ -201,7 +215,6 @@ export const getSingleAttendance = async (attendanceDocId, userId) => {
 
     if (data.ok) {
       const res = await data.json();
-      console.log("res", res);
 
       res["id"] = res["_id"];
       delete res["_id"];
@@ -217,9 +230,8 @@ export const getSingleAttendance = async (attendanceDocId, userId) => {
 
 export const getSingleStudent = async (userId, studentId) => {
   try {
-    console.log("studentId", studentId);
     const data = await fetch(
-      `http://localhost:3001/api/students/${userId}?studentId=${studentId}`,
+      `https://fingerprintattendanceserver.herokuapp.com/api/students/${userId}?studentId=${studentId}`,
       {
         credentials: "include",
         headers: {
@@ -230,13 +242,11 @@ export const getSingleStudent = async (userId, studentId) => {
 
     if (data.ok) {
       const res = await data.json();
-      console.log("getSingleStudent", res);
 
       res["id"] = res["_id"];
       delete res["_id"];
       delete res["__v"];
 
-      console.log("result", res);
       return res;
     } else {
       console.log("Request Error");
@@ -249,7 +259,7 @@ export const getSingleStudent = async (userId, studentId) => {
 export const getAttendanceAfter = async (date) => {
   try {
     const data = await fetch(
-      `http://localhost:3001/api/attendance/after/${Date.parse(date)}`,
+      `https://fingerprintattendanceserver.herokuapp.com/api/attendance/after/${Date.parse(date)}`,
       {
         credentials: "include",
         headers: {
@@ -277,7 +287,7 @@ export const getAttendanceAfter = async (date) => {
 export const getAttendanceForDuration = async (date_after, date_before) => {
   try {
     const data = await fetch(
-      `http://localhost:3001/api/attendance/after/${Date.parse(
+      `https://fingerprintattendanceserver.herokuapp.com/api/attendance/after/${Date.parse(
         date_after
       )}/before/${Date.parse(date_before)}`,
       {
@@ -288,9 +298,9 @@ export const getAttendanceForDuration = async (date_after, date_before) => {
       }
     );
 
-    if (data.ok) {
-      let res = await data.json();
+    let res = await data.json();
 
+    if (data.ok) {
       res = res?.map((item) => {
         item["id"] = item["_id"];
         delete item["_id"];
@@ -311,7 +321,7 @@ export const getSingleAttendanceForDuration = async (
 ) => {
   try {
     const data = await fetch(
-      `http://localhost:3001/api/attendance/user/${user_docId}/after/${Date.parse(
+      `https://fingerprintattendanceserver.herokuapp.com/api/attendance/user/${user_docId}/after/${Date.parse(
         date_after
       )}/before/${Date.parse(date_before)}`,
       {
@@ -340,7 +350,7 @@ export const getSingleAttendanceForDuration = async (
 
 export const getAttendanceSummary = async () => {
   const now = new Date();
-  const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+  const yesterday = new Date(now.getTime() - 12 * 60 * 60 * 1000);
   const recentRes = await getAttendanceAfter(yesterday);
 
   const currentMonthRes = await getAttendanceForDuration(
@@ -483,17 +493,17 @@ export const getSingleAttendanceSummary = async (singleUserId) => {
   };
 };
 
-export const getAllCourses = async () => {
+export const getAllCourses = async (id) => {
   try {
-    const data = await fetch("http://localhost:3001/api/courses", {
+    const data = await fetch(`https://fingerprintattendanceserver.herokuapp.com/api/courses/user/${id}`, {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
     });
+    const res = await data.json();
 
     if (data.ok) {
-      const res = await data.json();
 
       const courseList = res?.map((item) => {
         item["id"] = item["_id"];
@@ -501,20 +511,20 @@ export const getAllCourses = async () => {
         delete item["__v"];
         return item;
       });
-
+      
       return courseList;
     } else {
-      console.log("Request Error");
+      alert("Request Error")
     }
   } catch (error) {
     console.log(error);
   }
 };
 
-export const getSingleCourse = async (course_code) => {
+export const getSingleCourse = async (course_code, id) => {
   try {
     const data = await fetch(
-      `http://localhost:3001/api/courses/${course_code}`,
+      `https://fingerprintattendanceserver.herokuapp.com/api/courses/${course_code}/user/${id}`,
       {
         credentials: "include",
         headers: {
@@ -523,8 +533,8 @@ export const getSingleCourse = async (course_code) => {
       }
     );
 
+    const res = await data.json();
     if (data.ok) {
-      const res = await data.json();
 
       res["id"] = res["_id"];
       delete res["_id"];
@@ -538,16 +548,19 @@ export const getSingleCourse = async (course_code) => {
   }
 };
 
-export const getTodayAttendancePercentage = async () => {
+export const getTodayAttendancePercentage = async (id) => {
   const { recentRes } = await getAttendanceSummary();
-  console.log("recentRes", recentRes);
+
   if (recentRes.length !== 0) {
     let totalStudentPresent = 0;
     let totalNumOffering = 0;
 
     await Promise.all(
       recentRes.map(async (data) => {
-        const courseDataTodayAttendance = await getSingleCourse(data.course);
+        const courseDataTodayAttendance = await getSingleCourse(
+          data.course,
+          id
+        );
 
         totalStudentPresent =
           totalStudentPresent + data.students_present.length;
@@ -566,14 +579,21 @@ export const getTodayAttendancePercentage = async () => {
   }
 };
 
-export const getCourseAttendancePercentage = async (courseData) => {
-  const courseDataAttendance = await getSingleCourse(courseData.courseCode);
-  const percentage =
-    (courseData.studentList.length /
-      courseDataAttendance.num_students_offering) *
-    100;
+export const getCourseAttendancePercentage = async (courseData, id) => {
+  try {
+    const courseDataAttendance = await getSingleCourse(
+      courseData.courseCode,
+      id
+    );
+    const percentage =
+      (courseData.studentList.length /
+        courseDataAttendance.num_students_offering) *
+      100;
 
-  return !percentage ? 0 : percentage;
+    return !percentage ? 0 : percentage;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const getLecturerSubmittedAttendance = async (
@@ -581,8 +601,9 @@ export const getLecturerSubmittedAttendance = async (
   lecturerChart
 ) => {
   try {
+   
     const data = await fetch(
-      `http://localhost:3001/api/attendance/user/${user_docId}`,
+      `https://fingerprintattendanceserver.herokuapp.com/api/attendance/user/${user_docId}`,
       {
         credentials: "include",
         headers: {
@@ -605,7 +626,7 @@ export const getLecturerSubmittedAttendance = async (
 
         return item;
       });
-      console.log("getLecturerSubmittedAttendance", res);
+
       return res;
     } else {
       console.log("Request Error");
@@ -618,7 +639,7 @@ export const getLecturerSubmittedAttendance = async (
 export const getLecturerAttendanceForCourse = async (user_docId, course) => {
   try {
     const data = await fetch(
-      `http://localhost:3001/api/attendance//user/${user_docId}/course/${course}`,
+      `https://fingerprintattendanceserver.herokuapp.com/api/attendance/user/${user_docId}/course/${course}`,
       {
         credentials: "include",
         headers: {
@@ -670,9 +691,6 @@ export const getLectureDetails = async (currentUser, semester, session) => {
     true
   );
 
-  console.log("submittedAttendance", submittedAttendance);
-  console.log("currentUser", currentUser);
-
   if (submittedAttendance) {
     const data = Array.prototype.concat(
       ...currentUser.courses.map((item1) => {
@@ -702,22 +720,16 @@ export const getLectureDetails = async (currentUser, semester, session) => {
           for (let i = 0; i <= submittedAttendance.length - 1; i++) {
             if (submittedAttendance[i].course === item1) {
               count = count + 1;
-              console.log("count", count);
+
               seenCourse = submittedAttendance[i].course;
 
-              console.log(
-                "sbmittedAttendance[i].date",
-                submittedAttendance[i].date
-              );
               date = new Date(submittedAttendance[i].date).getDate();
               day = new Date(submittedAttendance[i].date).getDay();
               month = new Date(submittedAttendance[i].date).getMonth();
               total = submittedAttendance[i].students_present.length;
 
               chartData.push({
-                name: `${weekNames[day]} ${date}${
-                  date === "Attendance" ? "" : "th"
-                } ${monthNames[month]}`,
+                name: `${weekNames[day]}, ${monthNames[month]} ${date}`,
                 Total: total,
               });
             }
@@ -741,20 +753,20 @@ export const getLectureDetails = async (currentUser, semester, session) => {
           }
         }
 
-        console.log("result", result);
-
         return result.filter((item) => item !== null);
       })
     );
-    console.log("getLectureDetails", data);
+
     return data;
+  } else {
+    return [];
   }
 };
 
 export const getStudentFromRegNumber = async (userId, regNumber) => {
   try {
-    const data = await fetch(
-      `http://localhost:3001/api/students/${userId}/reg-number/${regNumber}`,
+    const res = await fetch(
+      `https://fingerprintattendanceserver.herokuapp.com/api/students/${userId}/reg-number/${regNumber}`,
       {
         credentials: "include",
         headers: {
@@ -762,16 +774,15 @@ export const getStudentFromRegNumber = async (userId, regNumber) => {
         },
       }
     );
+    let data = await res.json();
 
-    if (data.ok) {
-      let res = await data.json();
-
-      res["id"] = res["_id"];
-      delete res["_id"];
-      delete res["__v"];
-      return res;
+    if (res.ok && res.status !== 400) {
+      data["id"] = data["_id"];
+      delete data["_id"];
+      delete data["__v"];
+      return data;
     } else {
-      console.log("Request Error");
+      alert(data);
     }
   } catch (error) {
     console.log(error);
@@ -781,7 +792,7 @@ export const getStudentFromRegNumber = async (userId, regNumber) => {
 export const getStudentCourseAttendance = async (user_docId, course, id) => {
   try {
     const data = await fetch(
-      `http://localhost:3001/api/attendance/user/${user_docId}/course/${course}/student/${id}`,
+      `https://fingerprintattendanceserver.herokuapp.com/api/attendance/user/${user_docId}/course/${course}/student/${id}`,
       {
         credentials: "include",
         headers: {
@@ -808,28 +819,33 @@ export const getStudentCourseAttendance = async (user_docId, course, id) => {
   }
 };
 
-export const getLectureAttendanceSummary = async (attendanceData) => {
-  let attendanceDoc = await Promise.all(
-    attendanceData.map(async (data) => {
-      const percentage = await getCourseAttendancePercentage({
-        studentList: data.students_present,
-        courseCode: data.course,
-      });
+export const getLectureAttendanceSummary = async (attendanceData, id) => {
+  let attendanceDoc = [];
+  if (attendanceData) {
+    attendanceDoc = await Promise.all(
+      attendanceData?.map(async (data) => {
+        const percentage = await getCourseAttendancePercentage(
+          {
+            studentList: data.students_present,
+            courseCode: data.course,
+          },
+          id
+        );
 
-      let dateTime = new Date(data.date);
+        let dateTime = new Date(data.date);
 
-      const singleCourseData = await getSingleCourse(data.course);
-      let numAbsent =
-        singleCourseData.num_students_offering - data.students_present.length;
+        const singleCourseData = await getSingleCourse(data.course, id);
+        let numAbsent =
+          singleCourseData.num_students_offering - data.students_present.length;
 
-      return {
-        ...data,
-        date: dateTime.toLocaleString(),
-        percentage: Math.floor(percentage),
-        numAbsent,
-      };
-    })
-  );
-
+        return {
+          ...data,
+          date: dateTime.toLocaleString(),
+          percentage: Math.floor(percentage),
+          numAbsent,
+        };
+      })
+    );
+  }
   return attendanceDoc;
 };

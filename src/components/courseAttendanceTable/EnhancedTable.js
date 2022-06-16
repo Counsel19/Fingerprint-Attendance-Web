@@ -1,5 +1,4 @@
 import { useState, useContext } from "react";
-import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -122,19 +121,18 @@ export default function EnhancedTable({
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
 
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden" }}>
+    <TableContainer component={Paper}>
       <EnhancedTableToolbar
         course={courseCode}
         singleCourse={singleCourse}
         allCourse={course ? true : false}
         numSelected={selected.length}
       />
-      <TableContainer sx={{ maxHeight: 440 }}>
+      <TableContainer sx={{ maxHeight: 600 }}>
         <Table
-          overflow="scroll"
           aria-labelledby="tableTitle"
           size={dense ? "small" : "medium"}
-          sx={{ minWidth: "md" }}
+          sx={{ maxWidth: 1200 }}
         >
           <EnhancedTableHead
             numSelected={selected.length}
@@ -210,13 +208,12 @@ export default function EnhancedTable({
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-        
       />
       <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Dense padding"
-        sx={{mx: 1}}
+        sx={{ mx: 1 }}
       />
-    </Paper>
+    </TableContainer>
   );
 }

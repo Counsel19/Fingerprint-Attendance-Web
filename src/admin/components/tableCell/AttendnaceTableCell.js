@@ -1,6 +1,6 @@
 import { TableCell } from "@mui/material";
 import React from "react";
-import "./tableCell.scss"
+import "./tableCell.scss";
 
 const AttendanceTableCell = ({ row, handleViewAttendance }) => {
   return (
@@ -15,6 +15,7 @@ const AttendanceTableCell = ({ row, handleViewAttendance }) => {
       <TableCell
         align="left"
         padding="none"
+        
       >{`${row.session}/${row.semester}`}</TableCell>
       <TableCell align="left" padding="none">
         {row.date}

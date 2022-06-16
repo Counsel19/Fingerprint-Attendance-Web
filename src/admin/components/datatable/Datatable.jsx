@@ -12,7 +12,7 @@ import {
   getSingleStudent,
   getAttendanceDetails,
 } from "../../../services/getService";
-import  Datagrid  from "./Datagrid";
+import Datagrid from "./Datagrid";
 
 const Datatable = ({ student, user, attendanceData }) => {
   const location = useLocation();
@@ -44,7 +44,6 @@ const Datatable = ({ student, user, attendanceData }) => {
   ]);
 
   const navigate = useNavigate();
-  const [deleteMessage, setDeleteMessage] = useState(null);
 
   useEffect(() => {
     const getData = async () => {
@@ -60,12 +59,12 @@ const Datatable = ({ student, user, attendanceData }) => {
   useEffect(() => {
     const getData = async () => {
       if (attendanceData) {
-        setAttendance(await getAttendanceDetails(true));
+        setAttendance(await getAttendanceDetails(adminUser.id, true));
       }
     };
 
     getData();
-  }, [attendanceData]);
+  }, [adminUser.id, attendanceData]);
 
   useEffect(() => {
     const getData = async () => {
@@ -102,24 +101,87 @@ const Datatable = ({ student, user, attendanceData }) => {
     getData();
   }, [adminUser.id, attendnaceId, setAllStudents, student]);
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     // eslint-disable-next-line no-restricted-globals
     let proceed = confirm("Are you sure You want to delete?");
-    if (proceed) {
-      setAllUsers(allUsers?.filter((item) => item.id !== id));
-      fetch(`http://localhost:3001/api/users/${id}`, {
-        method: "DELETE",
-      }).then((res) => {
-        if (res.ok) {
-          res.json();
-          setDeleteMessage("Deleted Succusfully");
-          setTimeout(() => {
-            setDeleteMessage(null);
-          }, 3000);
+
+    if (id !== adminUser.id) {
+      if (proceed) {
+        let res1, res2;
+        if (user) {
+          setAllUsers(allUsers?.filter((item) => item.id !== id));
+          try {
+            try {
+              res1 = await fetch(
+                `https://fingerprintattendanceserver.herokuapp.com/api/users/${adminUser.id}/deletedId/${id}`,
+                {
+                  method: "DELETE",
+                  credentials: "include",
+                }
+              );
+            } catch (error) {
+              console.log(error);
+            }
+
+            try {
+              res2 = await fetch(
+                `https://fingerprintattendanceserver.herokuapp.com/api/attendance/${adminUser.id}/deletedId/${id}`,
+                {
+                  method: "DELETE",
+                  credentials: "include",
+                }
+              );
+            } catch (error) {
+              console.log(error);
+            }
+          
+            if (res1.ok && res2.ok) {
+              alert("User Deleted Successfully!");
+            } else {
+              alert("Request Error");
+            }
+          } catch (error) {
+            console.log(error);
+          }
         } else {
-          console.log("Request Error");
+          setAllStudents(allStudents?.filter((item) => item.id !== id));
+          try {
+            try {
+              res1 = await fetch(
+                `https://fingerprintattendanceserver.herokuapp.com/api/students/${adminUser.id}/deletedId/${id}`,
+                {
+                  method: "DELETE",
+                  credentials: "include",
+                }
+              );
+            } catch (error) {
+              console.log(error);
+            }
+
+            try {
+              res2 = await fetch(
+                `https://fingerprintattendanceserver.herokuapp.com/api/attendance/${adminUser.id}/studentId/${id}`,
+                {
+                  method: "DELETE",
+                  credentials: "include",
+                }
+              );
+            } catch (error) {
+              console.log(error);
+            }
+
+            if (res1.ok && res2.ok) {
+              alert("Student Deleted Successfully!");
+            } else {
+              alert("Request Error");
+            }
+          } catch (error) {
+            console.log(error);
+          }
         }
-      });
+      }
+    } else {
+      alert("You are not Permitted to delete the admin");
     }
   };
 
@@ -135,12 +197,14 @@ const Datatable = ({ student, user, attendanceData }) => {
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <div
-              onClick={() => handleView(params.row.id)}
-              className="viewButton"
-            >
-              View
-            </div>
+            {user && (
+              <div
+                onClick={() => handleView(params.row.id)}
+                className="viewButton"
+              >
+                View
+              </div>
+            )}
 
             <div
               className="deleteButton"
@@ -156,36 +220,42 @@ const Datatable = ({ student, user, attendanceData }) => {
   return (
     <>
       {user && allUsers ? (
-        <Datagrid
-          title="All Lecturers"
-          addLink="/admin/users/new"
-          data={allUsers}
-          searchParams={searchParamsUser}
-          q={q}
-          columns={userColumns}
-          actionColumn={actionColumn}
-        />
+        <>
+          <h1 className="tableTitle">All Lecturers</h1>
+          <Datagrid
+            title="All Lecturers"
+            addLink="/admin/users/new"
+            data={allUsers}
+            searchParams={searchParamsUser}
+            q={q}
+            columns={userColumns}
+            actionColumn={actionColumn}
+          />
+        </>
       ) : student && allStudents ? (
-        <Datagrid
-          title="All Students"
-          addLink="/admin/students/new"
-          data={allStudents}
-          searchParams={searchParamsStudent}
-          q={q}
-          columns={studentColumns}
-          actionColumn={actionColumn}
-        />
+        <>
+          <h1 className="tableTitle ">All Students</h1>
+          <Datagrid
+            addLink="/admin/students/new"
+            data={allStudents}
+            searchParams={searchParamsStudent}
+            q={q}
+            columns={studentColumns}
+            actionColumn={actionColumn}
+          />
+        </>
       ) : attendanceData && attendanceRecord ? (
-        <Datagrid
-          title="Attendance Record"
-          addLink="/admin/students/new"
-          data={attendanceRecord?.data}
-          searchParams={searchParamsStudent}
-          q={q}
-          columns={studentColumns}
-          actionColumn={actionColumn}
-          attendanceRecord={attendanceRecord}
-        />
+        <>
+          <h1 className="tableTitle">Attendance Record</h1>
+          <Datagrid
+            addLink="/admin/students/new"
+            data={attendanceRecord?.data}
+            searchParams={searchParamsStudent}
+            q={q}
+            columns={studentColumns}
+            attendanceRecord={attendanceRecord}
+          />
+        </>
       ) : (
         <SlidingPebbles
           text={"Loading..."}

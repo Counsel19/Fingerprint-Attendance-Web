@@ -2,9 +2,8 @@
   height: 600px;
   padding: 20px;
   background-color: #fff;
-  
-  
-  .datatableTitle{
+
+  .datatableTitle {
     width: 100%;
     font-size: 24px;
     color: gray;
@@ -15,20 +14,18 @@
     gap: 1rem;
 
     @media screen and (max-width: 640px) {
-      &{
+      & {
         flex-direction: column;
         align-items: flex-start;
-
       }
     }
 
-    .deleteMessage{
+    .deleteMessage {
       font-size: 1rem;
       color: rgb(225, 57, 57);
-
     }
 
-    .link{
+    .link {
       text-decoration: none;
       color: green;
       font-size: 16px;
@@ -83,7 +80,7 @@
       border: 1px dotted rgba(0, 0, 139, 0.596);
       cursor: pointer;
     }
-    
+
     .deleteButton {
       padding: 2px 5px;
       border-radius: 5px;
@@ -94,6 +91,6 @@
   }
 }
 
-.datatable_attendance{
+.datatable_attendance {
   height: 100%;
 }

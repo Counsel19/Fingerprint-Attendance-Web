@@ -8,7 +8,15 @@ import {
   getStudentCourseAttendance,
   getLecturerAttendanceForCourse,
 } from "../../services/getService";
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import StudentStatsTableCell from "../../components/tableCell/StudentStatsTableCell";
 
 const AnalyseForm = () => {
@@ -18,16 +26,18 @@ const AnalyseForm = () => {
   const [regNumber, setRegNumber] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const noInput = regNumber === "" 
+  const noInput = regNumber === "";
 
   const handleAnalyse = (e) => {
     e.preventDefault();
     setLoading(true);
 
     const getData = async () => {
-      const studentData = await getStudentFromRegNumber(currentUser.id, regNumber);
-      console.log("studentData", studentData);
-
+      const studentData = await getStudentFromRegNumber(
+        currentUser.id,
+        regNumber
+      );
+      
       const studentAttendance = await getStudentCourseAttendance(
         currentUser.id,
         course,
@@ -38,6 +48,10 @@ const AnalyseForm = () => {
         currentUser.id,
         course
       );
+      if (courseLectures.length === 0) {
+        alert("No attendance Submitted by Lecturer");
+        return;
+      }
 
       const absent = courseLectures.length - studentAttendance.length;
       const present = studentAttendance.length;
@@ -92,33 +106,49 @@ const AnalyseForm = () => {
               />
             </div>
             <div className="student__statsformGroup">
-              <input disabled={loading || noInput} type="submit" value="Analyse" />
+              <input
+                disabled={loading || noInput}
+                type="submit"
+                value="Analyse"
+              />
             </div>
           </form>
 
           {result && (
             <div className="student__statstable">
-               <TableContainer component={Paper} className="table">
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell className="tableCell">Reg Number</TableCell>
-            <TableCell className="tableCell">Full Name</TableCell>
-            <TableCell className="tableCell">No. of Present</TableCell>
-            <TableCell className="tableCell">No. of Absent</TableCell>
-            <TableCell className="tableCell">Attendance Percentage</TableCell>
-            <TableCell className="tableCell">Remark</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {result.map((row) => (
-            <TableRow key={row.id}>
-              <StudentStatsTableCell row={row} />
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+              <TableContainer
+                component={Paper}
+                sx={{ width: "100%" }}
+                className="table"
+              >
+                <Table
+                  overflow="scroll"
+                  sx={{ minWidth: "md" }}
+                  aria-label="simple table"
+                >
+                  <TableHead>
+                    <TableRow>
+                      <TableCell className="tableCell">Reg Number</TableCell>
+                      <TableCell className="tableCell">Full Name</TableCell>
+                      <TableCell className="tableCell">
+                        No. of Present
+                      </TableCell>
+                      <TableCell className="tableCell">No. of Absent</TableCell>
+                      <TableCell className="tableCell">
+                        Attendance Percentage
+                      </TableCell>
+                      <TableCell className="tableCell">Remark</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {result.map((row) => (
+                      <TableRow key={row.id}>
+                        <StudentStatsTableCell row={row} />
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </div>
           )}
         </div>

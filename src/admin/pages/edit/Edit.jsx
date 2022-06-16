@@ -3,15 +3,11 @@ import "../new/new.scss";
 import AdminSidebar from "../../components/adminSidebar/AdminSidebar";
 import Navbar from "../../components/navbar/Navbar";
 import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import EditIcon from "@mui/icons-material/Edit";
-import { editUserInputs } from "../../formSource";
-import {
-  handleCreateStudents,
-  handleEditLecturer,
-} from "../../../services/createService";
+import { handleEditLecturer } from "../../../services/createService";
 import { getSingleUser } from "../../../services/getService";
 import { useNavigate, useLocation } from "react-router-dom";
+import { validateCourses } from "../../../services/validate";
 
 const Edit = ({ inputs, title, newCourse }) => {
   const navigate = useNavigate();
@@ -29,32 +25,18 @@ const Edit = ({ inputs, title, newCourse }) => {
     };
 
     getData();
-  }, []);
-
-  const studentInit = {
-    firstname: "",
-    middlename: "",
-    lastname: "",
-    reg_number: "",
-    department: "",
-    faculty: "",
-    gender: "male",
-    level: "",
-  };
+  }, [userId]);
 
   const [user, setUser] = useState(userInit);
-  const [student, setStudent] = useState(studentInit);
 
   const [courseLecturing, setCourseLecturing] = useState(1);
-  const [courseLecturers, setCourseLecturers] = useState(1);
   const [loading, setLoading] = useState(false);
 
   const [url, setUrl] = useState("");
   const [file, setFile] = useState(null);
 
-  const handleIncrementInput = () => {
-    setCourseLecturing(courseLecturing + 1);
-    setCourseLecturers(courseLecturers + 1);
+  const handleIncrementInput = (e) => {
+    setCourseLecturing(parseInt(e.target.value));
   };
 
   const handleFileInputChange = (e) => {
@@ -75,8 +57,8 @@ const Edit = ({ inputs, title, newCourse }) => {
 
     let courses = user.courses;
 
+    courses.length = courseLecturing;
     courses[index] = value;
-
     setUser({ ...user, [name]: courses });
   };
 
@@ -84,9 +66,7 @@ const Edit = ({ inputs, title, newCourse }) => {
     let name = event.target.name;
     let value = event.target.value;
 
-    inputs === editUserInputs
-      ? setUser({ ...user, [name]: value })
-      : setStudent({ ...student, [name]: value });
+    setUser({ ...user, [name]: value });
   };
 
   const handleEdit = async (event) => {
@@ -95,16 +75,16 @@ const Edit = ({ inputs, title, newCourse }) => {
     setLoading(true);
 
     try {
-      if (inputs === editUserInputs) {
+      const validCourse = await validateCourses(user.courses);
+
+      if (validCourse) {
         await handleEditLecturer(user);
 
         setLoading(false);
         URL.revokeObjectURL(url);
         navigate(`/admin/users/${user.id}`);
-      } else if (!newCourse) {
-        await handleCreateStudents(student);
-        setStudent(studentInit);
-        setLoading(false);
+      } else {
+        alert("Invalid Course");
       }
     } catch (error) {
       console.log(error);
@@ -151,59 +131,63 @@ const Edit = ({ inputs, title, newCourse }) => {
                     <input
                       type={input.type}
                       name={input.name}
-                      value={
-                        inputs === editUserInputs
-                          ? user[`${input.name}`]
-                          : student[`${input.name}`]
-                      }
+                      value={user[`${input.name}`]}
                       placeholder={input.placeholder}
                       onChange={handleInput}
                       required
                     />
                   </div>
                 ))}
-                {!newCourse && (
-                  <div className="formInput">
-                    <label>Gender: </label>
-                    <select
-                      name="gender"
-                      value={user.gender}
-                      onChange={handleInput}
-                      required
-                    >
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                    </select>
-                  </div>
-                )}
-                {inputs === editUserInputs && (
-                  <div className="formInput">
-                    <label>
-                      Courses{" "}
-                      <span onClick={() => handleIncrementInput("course")}>
-                        <AddCircleOutlineIcon />
-                      </span>
-                    </label>
-                    {new Array(courseLecturing).fill().map((_, index) => (
-                      <input
-                        key={index}
-                        name="courses"
-                        onChange={(event) => handleCourseInput(event, index)}
-                        type="text"
-                        value={user.courses[index]}
-                        required
-                      />
-                    ))}
-                  </div>
-                )}
 
-                {inputs === editUserInputs && (
-                  <div className="edit__password">
-                    <p onClick={handleChangePassword}>
-                      <EditIcon /> Change Password
-                    </p>
-                  </div>
-                )}
+                <div className="formInput">
+                  <label>Gender: </label>
+                  <select
+                    name="gender"
+                    value={user.gender}
+                    onChange={handleInput}
+                    required
+                  >
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
+                </div>
+
+                <div className="formInput">
+                  <label>
+                    Courses{" "}
+                    <select
+                      value={courseLecturing}
+                      onChange={handleIncrementInput}
+                    >
+                      <option value={1}>1</option>
+                      <option value={2}>2</option>
+                      <option value={3}>3</option>
+                      <option value={4}>4</option>
+                      <option value={5}>5</option>
+                      <option value={6}>6</option>
+                      <option value={7}>7</option>
+                      <option value={8}>8</option>
+                      <option value={9}>9</option>
+                    </select>
+                  </label>
+
+                  {new Array(courseLecturing).fill().map((_, index) => (
+                    <input
+                      key={index}
+                      name="courses"
+                      onChange={(event) => handleCourseInput(event, index)}
+                      type="text"
+                      value={user.courses[index] ? user.courses[index] : ""}
+                      required
+                    />
+                  ))}
+                </div>
+
+                <div className="edit__password">
+                  <p onClick={handleChangePassword}>
+                    <EditIcon /> Change Password
+                  </p>
+                </div>
 
                 <button disabled={loading} type="submit">
                   Send

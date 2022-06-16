@@ -57,8 +57,6 @@ const AttendanceTable = ({ attendance, handleViewAttendance }) => {
     "students_present"
   ])
 
-  console.log("attendance", attendance);
-
   return (
     <>
       <EnhancedTable

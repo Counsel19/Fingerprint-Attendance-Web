@@ -3,10 +3,13 @@ import AdminSidebar from "../../components/adminSidebar/AdminSidebar";
 import Navbar from "../../components/navbar/Navbar";
 import Datatable from "../../components/datatable/Datatable";
 import Table from "../../components/table/Table";
+import { useContext } from "react";
+import { DataContext } from "../../../context/dataContext";
 
 const List = ({ student, user, attendance, attendanceData, newCourse }) => {
+    const { showSidebar } = useContext(DataContext)
   return (
-    <div className="list">
+    <div className="list"  styles={showSidebar ? {height: "100vh", overflow: "hidden" }: undefined}>
       <AdminSidebar />
       <div className="listContainer">
         <Navbar />

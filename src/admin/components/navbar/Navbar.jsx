@@ -21,7 +21,7 @@ const Navbar = () => {
 
   const handleSignout = async () => {
     try {
-      const res = await fetch("http://localhost:3001/auth/logout", {
+      const res = await fetch("https://fingerprintattendanceserver.herokuapp.com/auth/logout", {
         method: "GET",
         headers: {
           Accept: "application/json",
@@ -34,6 +34,7 @@ const Navbar = () => {
         window.alert("Problem Logging Out");
       } else {
         navigate("/");
+  
         window.location.reload();
       }
     } catch (error) {
@@ -46,7 +47,7 @@ const Navbar = () => {
       <div className="wrapper">
         <div className="navbar__left">
           <MenuIcon onClick={handleToggleSidebar}/>
-          Biometric Attendace Management System
+          <span>Biometric Attendace Management System</span> 
         </div>
         <div className="items">
           <div className="item">

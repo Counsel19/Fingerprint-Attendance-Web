@@ -3,26 +3,33 @@
 }
 
 .take__attendanceDetails {
-  flex: 15;
+  flex: 6;
   margin: 0 1rem;
-  
+  margin-bottom: 2rem;
 }
 
-.take__attendanceWrapper{
+.take__attendanceWrapper {
   display: flex;
   flex-direction: column;
 }
-.take__attendanceWrapper h1 {
-  font-size: 1.5rem;
-  border-bottom: 3px solid green;
-  padding: 0.5rem 0;
+.take__attendanceWrapper .attendance__heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2.5px solid green;
+  padding: 0 0 0.5rem 0;
   color: green;
 }
 
-.take__attendanceWrapper form {
+.attendance__heading h1 {
+  font-size: 1.5rem;
+  align-self: flex-end;
+}
+
+.take__attendanceWrapper .form__top {
   padding-top: 1.7rem;
   display: flex;
-  column-gap: 2rem;
+  gap: 2rem;
   align-items: center;
   margin-bottom: 1rem;
   justify-content: space-between;
@@ -74,7 +81,6 @@
   transition: 0.4s;
   font-weight: 600;
   max-width: 50%;
-
 }
 
 .attendance__formGroup input[type="submit"]:hover {
@@ -88,7 +94,7 @@
   align-items: center;
   background-color: #fff;
   padding: 0;
-  border: 1px solid #118a17 ;
+  border: 1px solid #118a17;
   color: #118a17;
   cursor: pointer;
   border-radius: 10px;
@@ -99,6 +105,21 @@
   max-width: 200px;
   width: 100%;
   margin-top: 1rem;
+}
+
+button:disabled,
+button[disabled] {
+  color: #c0c0c0;
+}
+
+.attendance__heading button {
+  max-width: 160px;
+  color: #dd1e2b;
+  border-radius: 0;
+}
+
+.attendance__heading button:disabled {
+  color: #d3434d73;
 }
 
 .regNo_input {
@@ -129,7 +150,7 @@
 .take__fingerPrint {
   display: flex;
   justify-content: space-between;
-  column-gap: 2rem;
+  gap: 2rem;
   margin-top: 3rem;
 }
 
@@ -149,8 +170,9 @@
   margin: 0 1rem;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   width: 100%;
+  gap: 2rem;
 }
 
 .takefingerprint__wrapper h3 {
@@ -172,10 +194,13 @@
   border-radius: 20px;
   margin: 1rem 0;
   background-color: rgb(247, 247, 247);
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .viewStudent__background {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -273,4 +298,65 @@
 
 .enroll {
   height: 170px;
+}
+
+@media screen and (max-width: 720px) {
+  .take__attendanceWrapper {
+    align-items: center;
+  }
+
+  .attendance__heading {
+    width: 100%;
+    max-width: 80%;
+  }
+
+  .take__attendanceWrapper .form__top {
+    flex-direction: column;
+    width: 100%;
+    max-width: 80%;
+    gap: 1rem;
+  }
+
+  .form__top .attendance__formGroup {
+    width: 100%;
+  }
+
+  .take__fingerPrint {
+    flex-direction: column;
+    max-width: 80%;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .takefingerprint__wrapper {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 472px) {
+  .attendance__heading {
+    max-width: 100%;
+  }
+
+  .attendance__heading h1 {
+    font-size: 1.3rem;
+  }
+
+  .take__attendanceWrapper .form__top {
+    max-width: 100%;
+  }
+
+  .take__fingerPrint {
+    max-width: 100%;
+  }
+}
+
+@media screen and (max-width: 370px) {
+  .take__attendanceWrapper .attendance__heading {
+    flex-direction: column;
+  }
+  .attendance__heading h1,
+  .attendance__heading button {
+    align-self: flex-start;
+  }
 }
